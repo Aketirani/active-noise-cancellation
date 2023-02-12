@@ -6,7 +6,7 @@ Text to come...
 ├── readme.md              <-- You Are Here
 |
 ├── data                   <-- Data Folder
-|   ├── bpir.mat           <-- Filter Coefficient
+|   ├── bpir.mat           <-- Filter Coefficients
 |   ├── noise.mat          <-- Noise Signal
 |   ├── speech.mat         <-- Speech Signal
 |
