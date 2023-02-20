@@ -18,14 +18,11 @@ Text to come...
 |   ├── lms.m              <-- Least Mean Squares
 |   ├── mprogress.m        <-- Displays Progress
 |   ├── nlms.m             <-- Normalized Least Mean Squares
+|   ├── optpara.m          <-- Optimize Parameters
 |   ├── rls.m              <-- Recursive Least Squares
 |   ├── wiener.m           <-- Wiener
 |
 ├── main.m                 <-- Main Matlab Script
-|
-├── mainoptpara.m          <-- Main Matlab Script
-|
-├── mainspeech.m           <-- Main Matlab Script
 |
 ├── readme.md              <-- You Are Here
 ```
