@@ -3,8 +3,6 @@ Text to come...
 
 ## Structure
 ```
-├── readme.md              <-- You Are Here
-|
 ├── data                   <-- Data Folder
 |   ├── bpir.mat           <-- Filter Coefficients
 |   ├── noise.mat          <-- Noise Signal
@@ -28,6 +26,8 @@ Text to come...
 ├── mainoptpara.m          <-- Main Matlab Script
 |
 ├── mainspeech.m           <-- Main Matlab Script
+|
+├── readme.md              <-- You Are Here
 ```
 
 ## Dataset

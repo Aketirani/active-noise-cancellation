@@ -1,28 +1,38 @@
-% Main
+% Active Noise Cancelling Using Filtered Adaptive Algorithms
 clear, clc, clf % clear
 rng('default')  % generate the same random numbers
 
-% Load filter
-load('../data/bpir')
+% Load data
+load('../data/speech') % load speech
+load('../data/noise')  % load noise
+load('../data/bpir')   % load filter
 
 % Initializate parameters
-T = 2000;    % iterations
-Nexp = 1000; % experiments
-L = 10;      % filter length
+T = 2000;   % iterations
+Nexp = 500; % experiments
+optpara_mode = false;
 
-% Reserve memory
-eW = zeros(T,Nexp);
-eLMS = zeros(T,Nexp);
-eNLMS = zeros(T,Nexp);
-eRLS  = zeros(T,Nexp);
-eFxLMS = zeros(T,Nexp);
-eFxNLMS = zeros(T,Nexp);
-eFxRLS  = zeros(T,Nexp);
+% Initialize variables
+e = struct();
+fields = {'W', 'LMS', 'NLMS', 'RLS', 'FxLMS', 'FxNLMS', 'FxRLS'};
+for i = 1:length(fields)
+    e.(fields{i}) = zeros(T, Nexp);
+end
+
+% Define algorithm parameters
+Pw = bpir;      % filter P(z)
+L = 10;         % filter length
+mu_LMS = 0.05;  % lms step size
+mu_NLMS = 0.5;  % nlms step size
+delta = 0.01;   % regularization parameter
+beta = 0.997;   % forget factor
+lambda = 0.1;   % regularization
+mu_FxLMS = 0.1; % fxlms step size
+mu_FxNLMS = 1;  % fxnlms step size
 
 for i = 1:Nexp
     % Initializate parameters
     xn = randn(T,1);      % white noise
-    Pw = bpir;            % filter P(z)
     d = filter(Pw,1,xn);  % filtered white noise d(n)
     
     % LMS on white noise used for filtered algorithms
@@ -30,33 +40,16 @@ for i = 1:Nexp
     wn = randn(T,1);      % white noise
     yn = filter(Sw,1,wn); % desired signal
     mu_wn = 0.1;          % step size
-    [~, ~, Shx, Shw] = lms(wn, yn, L, mu_wn);
+    [~, ~, Shw, Shx] = lms(wn, yn, L, mu_wn);
     
     % Algorithms
-    % Wiener
     [yW, eW(:,i)] = wiener(xn, d, L);
-    % LMS
-    mu_LMS = 0.05;       % step size
     [yLMS, eLMS(:,i)] = lms(xn, d, L, mu_LMS);
-    % NLMS
-    mu_NLMS = 0.5;       % step-size
-    delta = 0.01;        % regularization parameter
     [yNLMS, eNLMS(:,i)] = nlms(xn, d, L, mu_NLMS, delta);
-    % RLS
-    beta_RLS = 0.997;    % forget factor
-    lambda_RLS = 0.1;    % regularization
-    [yRLS, eRLS(:,i)] = rls(xn, d, L, beta_RLS, lambda_RLS);
-    % FxLMS
-    mu_FxLMS = 0.1;      % step size
+    [yRLS, eRLS(:,i)] = rls(xn, d, L, beta, lambda);
     [yFxLMS, eFxLMS(:,i)] = fxlms(xn, d, L, mu_FxLMS, Sw, Shw, Shx);
-    % FxNLMS
-    mu_FxNLMS = 1;       % step size
-    delta = 0.01;        % regularization parameter
     [yFxNLMS, eFxNLMS(:,i)] = fxnlms(xn, d, L, mu_FxNLMS, Sw, Shw, Shx, delta);
-    % FxRLS
-    beta_FxRLS = 0.997;  % forget factor
-    lambda_FxRLS = 0.1;  % regularization
-    [yFxRLS, eFxRLS(:,i)] = fxrls(xn, d, L, beta_FxRLS, lambda_FxRLS, Sw, Shw, Shx);
+    [yFxRLS, eFxRLS(:,i)] = fxrls(xn, d, L, beta, lambda, Sw, Shw, Shx);
     
     mprogress(i/Nexp);   % elapsed and remaining time
 end
@@ -70,16 +63,27 @@ mse_fxlms = sum(eFxLMS,2)/Nexp;
 mse_fxnlms = sum(eFxNLMS,2)/Nexp;
 mse_fxrls = sum(eFxRLS,2)/Nexp;
 
-% Plot
+% Plot results
 figure(1)
 plot(1:T,10*log10(mse_lms),'b',1:T,10*log10(mse_nlms),'r',...
-    1:T,10*log10(mse_rls),'g',1:T,10*log10(mse_fxlms),'c',...
-    1:T,10*log10(mse_fxnlms),'m',1:T,10*log10(mse_fxrls),'y')
+     1:T,10*log10(mse_rls),'g',1:T,10*log10(mse_fxlms),'c',...
+     1:T,10*log10(mse_fxnlms),'m',1:T,10*log10(mse_fxrls),'y')
 legend('LMS','NLMS','RLS','FxLMS','FxNLMS','FxRLS')
-title('Converge'); xlabel('iterations'); ylabel('log mse')
-
+title('Converge'); xlabel('Iterations'); ylabel('MSE (dB)')
 figure(2)
 plot(1:T,d-yLMS,'b',1:T,d-yNLMS,'r',1:T,d-yRLS,'g',...
-    1:T,d-yFxLMS,'c',1:T,d-yFxNLMS,'m',1:T,d-yFxRLS,'y')
+     1:T,d-yFxLMS,'c',1:T,d-yFxNLMS,'m',1:T,d-yFxRLS,'y')
 legend('LMS','NLMS','RLS','FxLMS','FxNLMS','FxRLS')
-title('Converge'); xlabel('iterations'); ylabel('error')
+title('Converge'); xlabel('Iterations'); ylabel('Error')
+
+if optpara_mode == true
+    % Initializate parameters
+    L_vec = 8:16; % filter length vector
+    alg = 'LMS';  % algorithm
+    mu_vec = 0.01:0.01:0.1; % step size vector
+
+    % Optimize Parameters
+    [opt_L, opt_mu] = optpara(T, Nexp, L_vec, mu_vec, Pw, alg);
+    fprintf('Algorithm %s has optimal filter length L=%d\n', alg, opt_L);
+    fprintf('Algorithm %s has optimal step size mu=%.2f\n', alg, opt_mu);
+end

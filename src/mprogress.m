@@ -86,20 +86,15 @@ if n-m>p || n<m || n==1
     end
     % Display counter string
     disp(c);
-    
     % Refresh display
     pause(0); drawnow;
-    
     % If timer has been displayed before, set p to make next
     % update in T0 sec and counter has incresed more than N0
     if ~isempty(tp), p = max(T0*p/toc(tp), N0); end
-    
     % Remember when the counter was last displayed
     tp = tic;
-    
     % Remember the value of the counter that was displayed
     m = n;
-    
     % Counter has been updated
     update = true;
 end
