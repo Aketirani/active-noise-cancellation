@@ -14,9 +14,9 @@ function [yhat, se] = rls(x, y, L, beta, lambda)
 
 % Validate inputs
 assert(length(x) == length(y), 'Input and desired signals must have the same length')
-assert(L > 0 && round(L) == L, 'Filter length must be a positive integer')
-assert(beta > 0 && beta < 1, 'Forget factor must be a scalar between 0 and 1')
-assert(lambda > 0, 'Regularization must be a positive scalar')
+assert(L>0 && round(L) == L, 'Filter length must be a positive integer')
+assert(beta>0 && beta<1, 'Forget factor must be a scalar between 0 and 1')
+assert(lambda>0, 'Regularization must be a positive scalar')
 
 % Initialize variables
 yhat = zeros(size(y));
@@ -27,13 +27,13 @@ Pn = 1/lambda*eye(L);
 
 % Perform algorithm
 for n = 1:length(y)
-    xn = [x(n); xn(1:L-1)];            % get xn
-    yhat(n) = w'*xn;                   % get filter output
-    e(n) = y(n)-yhat(n);               % calculate error
-    zn = Pn*xn;                        % update iteration
-    Kn = zn/(beta+xn'*zn);             % kalman gain, this term may be unstable 
-    w = w+Kn*e(n);                     % update iteration
-    Pn = beta^-1*(Pn-Kn*xn'*Pn);       % update iteration
+    xn = [x(n); xn(1:L-1)];      % get xn
+    yhat(n) = w'*xn;             % get filter output
+    e(n) = y(n)-yhat(n);         % calculate error
+    zn = Pn*xn;                  % update iteration
+    Kn = zn/(beta+xn'*zn);       % kalman gain, this term may be unstable 
+    w = w+Kn*e(n);               % update iteration
+    Pn = beta^-1*(Pn-Kn*xn'*Pn); % update iteration
 end
 
 % Set output variables

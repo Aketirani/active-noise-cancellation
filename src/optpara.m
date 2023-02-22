@@ -10,10 +10,11 @@ function [opt_L, opt_mu] = optpara(T, Nexp, L_vec, mu_vec, Pw, alg)
 %   alg: [char] algorithm type
 %
 % Outputs:
-%	opt_L: [1x1] optimal filter length for the lowest mean squared error
-%	opt_mu: [1x1] optimal step size for the lowest mean squared error
+%	opt_L: [1x1] optimal filter length for the lowest mean squared error (positive integer)
+%	opt_mu: [1x1] optimal step size for the lowest mean squared error (positive integer)
 
 % Validate inputs
+assert(nargin == 6, 'Invalid number of input arguments. The function requires 6 input arguments.')
 assert(isscalar(T) && T>0, 'T should be a positive scalar')
 assert(isscalar(Nexp) && Nexp>0, 'Nexp should be a positive scalar')
 assert(isvector(L_vec) && all(L_vec > 0) && all(mod(L_vec, 1) == 0), 'L_vec should be a vector of positive integers')

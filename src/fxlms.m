@@ -16,17 +16,17 @@ function [yhat, se] = fxlms(x, y, L, mu, Sw, Shw, Shx)
 
 % Validate inputs
 assert(length(x) == length(y), 'Input and desired signals must have the same length')
-assert(L > 0 && round(L) == L, 'Filter length must be a positive integer')
-assert(mu > 0, 'Step size must be a positive scalar')
+assert(L>0 && round(L) == L, 'Filter length must be a positive integer')
+assert(mu>0, 'Step size must be a positive scalar')
 
 % Set default values for optional inputs
-if nargin < 5 || isempty(Sw)
+if nargin<5 || isempty(Sw)
     Sw = zeros(L, 1);
 end
-if nargin < 6 || isempty(Shw)
+if nargin<6 || isempty(Shw)
     Shw = zeros(L, 1);
 end
-if nargin < 7 || isempty(Shx)
+if nargin<7 || isempty(Shx)
     Shx = zeros(L, 1);
 end
 

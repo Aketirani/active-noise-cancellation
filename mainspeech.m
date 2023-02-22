@@ -8,6 +8,7 @@ load('../data/noise')  % load noise
 load('../data/bpir')   % load filter
 
 % Initializate parameters
+play_mode = false;
 fs = 8000;     % sample rate
 s = speech;    % speech x(n)
 T = length(s); % number of observations
@@ -48,16 +49,18 @@ T = table(methods', mse, 'VariableNames', {'Method', 'MSE'});
 disp(T);
 
 % Play sounds
-% sound(s)           % speech
-% sound(fx)          % filtered noise
-% sound(d)           % noisy speech
-% sound(d-fx)        % ideal
-% sound(d-yLMS)      % lms
-% sound(d-yNLMS)     % nlms
-% sound(d-yRLS)      % rls
-% sound(d-yFxLMS)    % fxlms
-% sound(d-yFxNLMS)   % fxnlms
-% sound(d-yFxRLS)    % fxrls
+if play_mode == true
+    sound(s)           % speech
+    sound(fx)          % filtered noise
+    sound(d)           % noisy speech
+    sound(d-fx)        % ideal
+    sound(d-yLMS)      % lms
+    sound(d-yNLMS)     % nlms
+    sound(d-yRLS)      % rls
+    sound(d-yFxLMS)    % fxlms
+    sound(d-yFxNLMS)   % fxnlms
+    sound(d-yFxRLS)    % fxrls
+end
 
 % Plot results
 figure(4)
@@ -65,7 +68,7 @@ plot(tv,fx-yLMS,'b',tv,fx-yNLMS,'r',tv,fx-yRLS,'g',...
     tv,fx-yFxLMS,'c',tv,fx-yFxNLMS,'m',tv,fx-yFxRLS,'y')
 legend('LMS','NLMS','RLS','FxLMS','FxNLMS','FxRLS')
 title('Performance'); xlabel('Time (sec)'); ylabel('Error')
-figure(2)
+figure(5)
 signals = {s, fx, d, d-yFxRLS};
 titles = [{'Speech'},{'Noise'},{'Noisy speech'},{'Filtered output'}];
 hw = 256; % hamming window size

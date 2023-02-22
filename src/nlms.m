@@ -14,9 +14,9 @@ function [yhat, se] = nlms(x, y, L, mu, delta)
 
 % Validate inputs
 assert(length(x) == length(y), 'Input and desired signals must have the same length')
-assert(L > 0 && round(L) == L, 'Filter length must be a positive integer')
-assert(mu > 0, 'Step size must be a positive scalar')
-assert(delta > 0, 'Stability value delta must be a positive scalar')
+assert(L>0 && round(L) == L, 'Filter length must be a positive integer')
+assert(mu>0, 'Step size must be a positive scalar')
+assert(delta>0, 'Stability value delta must be a positive scalar')
 
 % Initialize variables
 yhat = zeros(size(y));
