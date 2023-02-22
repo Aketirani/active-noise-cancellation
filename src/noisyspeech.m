@@ -1,9 +1,10 @@
-function Tmse = noisyspeech(s, x, Pw, play)
+function Te = noisyspeech(s, x, L, Pw, play, plot_save, plot_path)
 % Noise reduction on noisy speech using different adaptive filters
 %
 % Inputs:
 %	s: [1xN] vector of the clean speech signal
 %   x: [1xN] vector of the noisy signal
+%	L: [1x1] filter length (positive integer)
 %   Pw: [Lx1] impulse response of the system
 %   play: string indicating which audio to play, options are:
 %         - 'none': play nothing
@@ -17,16 +18,21 @@ function Tmse = noisyspeech(s, x, Pw, play)
 %         - 'fxlms': play noisy speech signal filtered using FxLMS algorithm
 %         - 'fxnlms': play noisy speech signal filtered using FxNLMS algorithm
 %         - 'fxrls': play noisy speech signal filtered using FxRLS algorithm
+%   plot_save: save the figure into a png if set to true (logical)
+%   plot_path: path to save the figure (string)
 %
 % Outputs:
-%	Tmse: [7x2] table containing the error for each adaptive filter algorithm
+%	Te: [7x2] table containing the error for each adaptive filter algorithm
 
 % Validate inputs
-assert(nargin == 4, 'Invalid number of input arguments. The function requires 4 input arguments.')
+assert(nargin == 7, 'Invalid number of input arguments. The function requires 7 input arguments.')
 assert(isvector(s), 's must be a vector.')
 assert(isvector(x), 'x must be a vector.')
+assert(isnumeric(L) && isscalar(L) && L > 0, 'L must be a positive scalar.')
 assert(isvector(Pw), 'Pw must be a vector.')
 assert(ischar(play), 'play must be a string.')
+assert(islogical(plot_save), 'plot_save must be a boolean value.');
+assert(ischar(plot_path), 'play must be a string.')
 assert(length(s) == length(x), 's and x must have the same length.')
 assert(any(strcmpi(play, {'none', 's', 'fx', 'd', 'dfx', 'lms', 'nlms', 'rls', 'fxlms', 'fxnlms', 'fxrls'})), ...
     'play is invalid. It must be one of the following: ''none'', ''s'', ''fx'', ''d'', ''dfx'', ''lms'', ''nlms'', ''rls'', ''fxlms'', ''fxnlms'', or ''fxrls''.')
@@ -40,7 +46,6 @@ time = T/fs;               % total time of audio
 tv = 0:time/T:time-time/T; % time vector
 
 % Define algorithm parameters
-L = 10;         % filter length
 mu_LMS = 0.05;  % lms step size
 delta = 0.1;    % regularization parameter
 beta = 0.997;   % forget factor
@@ -55,18 +60,18 @@ mu_wn = 0.1;          % step size
 [~, ~, Shw, Shx] = lms(wn, yn, L, mu_wn);
 
 % Algorithms
-[yW, eW] = wiener(x, d, L);
-[yLMS, eLMS] = lms(x, d, L, mu_LMS);
-[yNLMS, eNLMS] = nlms(x, d, L, mu_LMS, delta);
-[yRLS, eRLS] = rls(x, d, L, beta, lambda);
-[yFxLMS, eFxLMS] = fxlms(x, d, L, mu_FxLMS, Sw, Shw, Shx);
-[yFxNLMS, eFxNLMS] = fxnlms(x, d, L, mu_FxLMS, Sw, Shw, Shx, delta);
-[yFxRLS, eFxRLS] = fxrls(x, d, L, beta, lambda, Sw, Shw, Shx);
+[yW,eW] = wiener(x, d, L);
+[yLMS,eLMS] = lms(x, d, L, mu_LMS);
+[yNLMS,eNLMS] = nlms(x, d, L, mu_LMS, delta);
+[yRLS,eRLS] = rls(x, d, L, beta, lambda);
+[yFxLMS,eFxLMS] = fxlms(x, d, L, mu_FxLMS, Sw, Shw, Shx);
+[yFxNLMS,eFxNLMS] = fxnlms(x, d, L, mu_FxLMS, Sw, Shw, Shx, delta);
+[yFxRLS,eFxRLS] = fxrls(x, d, L, beta, lambda, Sw, Shw, Shx);
 
 % Create table
 methods = {'W', 'LMS', 'NLMS', 'RLS', 'FxLMS', 'FxNLMS', 'FxRLS'};
 mse = [mean(eW); mean(eLMS); mean(eNLMS); mean(eRLS); mean(eFxLMS); mean(eFxNLMS); mean(eFxRLS)];
-Tmse = table(methods', mse, 'VariableNames', {'Method', 'Error'});
+Te = table(methods', mse, 'VariableNames', {'Method', 'Error'});
 
 % Play audio
 if strcmpi(play,'none')
@@ -95,19 +100,44 @@ elseif strcmpi(play,'fxrls')
     sound(d-yFxRLS)  % fxrls
 end
 
+% Apply moving average filter
+maL = 100; % filter length
+eW = movmean(eW, maL);
+eLMS = movmean(eLMS, maL);
+eNLMS = movmean(eNLMS, maL);
+eRLS = movmean(eRLS, maL);
+eFxLMS = movmean(eFxLMS, maL);
+eFxNLMS = movmean(eFxNLMS, maL);
+eFxRLS = movmean(eFxRLS, maL);
+
 % Plot results
 figure(4)
+plot(1:T,10*log10(eW),'k',1:T,10*log10(eLMS),'b',1:T,10*log10(eNLMS),'r',1:T,10*log10(eRLS),'g',...
+     1:T,10*log10(eFxLMS),'c',1:T,10*log10(eFxNLMS),'m',1:T,10*log10(eFxRLS),'y')
+legend('W','LMS','NLMS','RLS','FxLMS','FxNLMS','FxRLS')
+legend('W','LMS','NLMS','RLS','FxLMS','FxNLMS','FxRLS')
+title('Performance'); xlabel('Time (s)'); ylabel('MSE (dB)')
+figure(5)
 plot(tv,fx-yW,'k', tv,fx-yLMS,'b',tv,fx-yNLMS,'r',tv,fx-yRLS,'g',...
      tv,fx-yFxLMS,'c',tv,fx-yFxNLMS,'m',tv,fx-yFxRLS,'y')
 legend('W','LMS','NLMS','RLS','FxLMS','FxNLMS','FxRLS')
-title('Performance'); xlabel('Time (sec)'); ylabel('Error')
-figure(5)
+title('Convergence'); xlabel('Time (s)'); ylabel('Error')
+figure(6)
 signals = {s, fx, d, d-yFxRLS};
 titles = [{'Speech'},{'Noise'},{'Noisy speech'},{'Filtered output'}];
 hw = 256; % hamming window size
 np = 50;  % amount of overlap
 for i = 1:length(signals)
     subplot(length(signals),1,i);
-    spectrogram(signals{i},hw,np,'yaxis')
-    title(titles(i)); xlabel('time index'); ylabel('freq. index')
+    [S, F, T] = spectrogram(signals{i}, hw, np, [], fs);
+    imagesc(T, F, 20*log10(abs(S))); % convert to dB
+    set(gca,'YDir','normal');        % flip y-axis direction
+    title(titles(i)); xlabel('Time (s)'); ylabel('Frequency (Hz)');
+end
+
+% Save figures to plot_path
+if plot_save == true
+    saveas(figure(4), [plot_path 'PerformanceNS.png']);
+    saveas(figure(5), [plot_path 'ConvergenceNS.png']);
+    saveas(figure(6), [plot_path 'NoiseSpeech.png']);
 end

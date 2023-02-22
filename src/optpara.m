@@ -1,4 +1,4 @@
-function [opt_L, opt_mu] = optpara(T, Nexp, L_vec, mu_vec, Pw, alg)
+function [opt_L, opt_mu] = optpara(T, Nexp, L_vec, mu_vec, Pw, alg, plot_save, plot_path)
 % Finds the optimal filter length and step size
 % 
 % Inputs:
@@ -8,17 +8,21 @@ function [opt_L, opt_mu] = optpara(T, Nexp, L_vec, mu_vec, Pw, alg)
 %	mu_vec: [1xN] step size vector (positive scalars)
 %   Pw: [Lx1] impulse response of the system
 %   alg: [char] algorithm type
+%   plot_save: save the figure into a png if set to true (logical)
+%   plot_path: path to save the figure (string)
 %
 % Outputs:
 %	opt_L: [1x1] optimal filter length for the lowest mean squared error (positive integer)
 %	opt_mu: [1x1] optimal step size for the lowest mean squared error (positive integer)
 
 % Validate inputs
-assert(nargin == 6, 'Invalid number of input arguments. The function requires 6 input arguments.')
+assert(nargin == 8, 'Invalid number of input arguments. The function requires 8 input arguments.')
 assert(isscalar(T) && T>0, 'T should be a positive scalar')
 assert(isscalar(Nexp) && Nexp>0, 'Nexp should be a positive scalar')
 assert(isvector(L_vec) && all(L_vec > 0) && all(mod(L_vec, 1) == 0), 'L_vec should be a vector of positive integers')
 assert(isvector(mu_vec) && all(mu_vec > 0), 'mu_vec should be a vector of positive values')
+assert(islogical(plot_save), 'plot_save must be a boolean value.');
+assert(ischar(plot_path), 'play must be a string.')
 
 % Initializate parameters
 c1 = 1; % counter 1
@@ -88,3 +92,8 @@ plot(mu_vec(idx_v),10*log10(mse_min_v),'ro')
 hold off
 title(alg); xlabel('Step Size'); ylabel('MSE (dB)')
 legend('L=8','L=9','L=10','L=11','L=12','L=13','L=14','L=15','L=16','ME')
+
+% Save figures to plot_path
+if plot_save == true
+    saveas(figure(3), [plot_path strcat('Optimal', alg,'.png')]);
+end
