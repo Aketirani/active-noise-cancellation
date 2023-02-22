@@ -1,5 +1,5 @@
 function Tmse = noisyspeech(s, x, Pw, play)
-% Noise reduction using different adaptive filters
+% Noise reduction on noisy speech using different adaptive filters
 %
 % Inputs:
 %	s: [1xN] vector of the clean speech signal
