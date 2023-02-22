@@ -3,8 +3,6 @@ Text to come...
 
 ## Structure
 ```
-├── readme.md              <-- You Are Here
-|
 ├── data                   <-- Data Folder
 |   ├── bpir.mat           <-- Filter Coefficients
 |   ├── noise.mat          <-- Noise Signal
@@ -20,14 +18,15 @@ Text to come...
 |   ├── lms.m              <-- Least Mean Squares
 |   ├── mprogress.m        <-- Displays Progress
 |   ├── nlms.m             <-- Normalized Least Mean Squares
+|   ├── noisespeech.m      <-- Noise Reduction On Noisy Speech
+|   ├── optpara.m          <-- Optimize Parameters
 |   ├── rls.m              <-- Recursive Least Squares
+|   ├── simulation.m       <-- Simulates Adaptive Filters
 |   ├── wiener.m           <-- Wiener
 |
 ├── main.m                 <-- Main Matlab Script
 |
-├── mainoptpara.m          <-- Main Matlab Script
-|
-├── mainspeech.m           <-- Main Matlab Script
+├── readme.md              <-- You Are Here
 ```
 
 ## Dataset
