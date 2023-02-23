@@ -3,12 +3,12 @@ clear, clc, clf % clear
 rng('default')  % generate the same random numbers
 
 % Load data
-load('data/speech') % load speech
-load('data/noise')  % load noise
-load('data/bpir')   % load filter
-s = speech;            % speech x(n)
-x = noise;             % noise
-Pw = bpir;             % filter P(z)
+load('data/speech')  % load speech
+load('data/noise')   % load noise
+load('data/bpir')    % load filter
+s = speech;          % speech x(n)
+x = noise;           % noise
+Pw = bpir;           % filter P(z)
 
 % Modes
 sim_mode = true;     % simulation mode

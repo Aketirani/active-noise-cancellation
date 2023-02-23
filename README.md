@@ -14,30 +14,34 @@ The above diagram depicts the impulse response filter of the secondary path, den
 
 ## Structure
 ```
-├── data                   <-- Data Folder
-|   ├── bpir.mat           <-- Filter Coefficients
-|   ├── noise.mat          <-- Noise Signal
-|   ├── speech.mat         <-- Speech Signal
+├── data                        <-- Data Folder
+|   ├── bpir.mat                <-- Filter Coefficients
+|   ├── noise.mat               <-- Noise Signal
+|   ├── speech.mat              <-- Speech Signal
 |
-├── plots                  <-- Plots Folder
-|   ├── *.png              <-- Plots
+├── plots                       <-- Plots Folder
+|   ├── *.png                   <-- Plots
 |
-├── src                    <-- Source Folder
-|   ├── fxlms.m            <-- Filtered Least Mean Squares
-|   ├── fxnlms.m           <-- Filtered Normalized Least Mean Squares
-|   ├── fxrls.m            <-- Filtered Recursive Least Squares
-|   ├── lms.m              <-- Least Mean Squares
-|   ├── mprogress.m        <-- Displays Progress
-|   ├── nlms.m             <-- Normalized Least Mean Squares
-|   ├── noisespeech.m      <-- Noise Reduction On Noisy Speech
-|   ├── optpara.m          <-- Optimize Parameters
-|   ├── rls.m              <-- Recursive Least Squares
-|   ├── simulation.m       <-- Simulates Adaptive Filters
-|   ├── wiener.m           <-- Wiener
+├── src                         <-- Source Folder
+|   ├── fxlms.m                 <-- Filtered Least Mean Squares
+|   ├── fxnlms.m                <-- Filtered Normalized Least Mean Squares
+|   ├── fxrls.m                 <-- Filtered Recursive Least Squares
+|   ├── lms.m                   <-- Least Mean Squares
+|   ├── mprogress.m             <-- Displays Progress
+|   ├── nlms.m                  <-- Normalized Least Mean Squares
+|   ├── noisespeech.m           <-- Noise Reduction On Noisy Speech
+|   ├── optpara.m               <-- Optimize Parameters
+|   ├── rls.m                   <-- Recursive Least Squares
+|   ├── simulation.m            <-- Simulates Adaptive Filters
+|   ├── wiener.m                <-- Wiener
 |
-├── main.m                 <-- Main Matlab Script
+├── .gitignore                  <-- Configuring Ignored Files
 |
-├── readme.md              <-- You Are Here
+├── .pre-commit-config.yaml     <-- Pre-Commit Configuration
+|
+├── main.m                      <-- Main Matlab Script
+|
+├── readme.md                   <-- You Are Here
 ```
 
 ## Dataset
