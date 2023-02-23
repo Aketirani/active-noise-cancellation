@@ -3,12 +3,12 @@ clear, clc, clf % clear
 rng('default')  % generate the same random numbers
 
 % Load data
-load('data/speech') % load speech
-load('data/noise')  % load noise
-load('data/bpir')   % load filter
-s = speech;            % speech x(n)
-x = noise;             % noise
-Pw = bpir;             % filter P(z)
+load('data/speech')  % load speech
+load('data/noise')   % load noise
+load('data/bpir')    % load filter
+s = speech;          % speech x(n)
+x = noise;           % noise
+Pw = bpir;           % filter P(z)
 
 % Modes
 sim_mode = true;     % simulation mode
@@ -36,7 +36,7 @@ if optpara_mode == true
     L_vec = 8:16;           % filter length vector
     mu_vec = 0.01:0.01:0.1; % step size vector
     alg = 'LMS';            % algorithm
-    
+
     % Optimize Parameters
     [opt_L, opt_mu] = optpara(T, Nexp, L_vec, mu_vec, Pw, alg, plot_save, plot_path);
     fprintf('Algorithm %s has optimal filter length L=%d\n', alg, opt_L);
