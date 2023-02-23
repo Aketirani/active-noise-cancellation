@@ -32,12 +32,14 @@ The above diagram depicts the impulse response filter of the secondary path, den
 |   ├── noisespeech.m           <-- Noise Reduction On Noisy Speech
 |   ├── optpara.m               <-- Optimize Parameters
 |   ├── rls.m                   <-- Recursive Least Squares
-|   ├── simulation.m            <-- Simulates Adaptive Filters
+|   ├── simulation.m            <-- Simulate Adaptive Filters
 |   ├── wiener.m                <-- Wiener
 |
 ├── .gitignore                  <-- Configuring Ignored Files
 |
 ├── .pre-commit-config.yaml     <-- Pre-Commit Configuration
+|
+├── flowchart.wsd               <-- Pipeline Flowchart
 |
 ├── main.m                      <-- Main Matlab Script
 |

@@ -1,0 +1,13 @@
+@startuml Pipeline Flowchart
+|ANC|
+package "main.m" {
+    :start|
+    :load data;
+    :initialize variables;
+    :simulate adaptive filters;
+    :optimize parameters;
+    :noise reduction on noisy speech;
+    :end|
+}
+stop
+@enduml

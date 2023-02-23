@@ -1,4 +1,4 @@
-% Active Noise Cancelling Using Filtered Adaptive Algorithms
+% Main script
 clear, clc, clf % clear
 rng('default')  % generate the same random numbers
 
@@ -24,13 +24,13 @@ T = 2000;   % iterations
 Nexp = 500; % experiments
 L = 10;     % filter length
 
-% Simulation Demo
+% Run simulate adaptive filters
 if sim_mode == true
     Te = simulation(T, Nexp, L, Pw, plot_save, plot_path);
     disp(Te);
 end
 
-% Optimize parameters Demo
+% Run optimize parameters
 if optpara_mode == true
     % Initializate parameters
     L_vec = 8:16;           % filter length vector
@@ -43,7 +43,7 @@ if optpara_mode == true
     fprintf('Algorithm %s has optimal step size mu=%.2f\n', alg, opt_mu);
 end
 
-% Noisy speech signal Demo
+% Run noise reduction on noisy speech
 if ns_mode == true
     play = 'none'; % audio to play
     Te = noisyspeech(s, x, L, Pw, play, plot_save, plot_path);
