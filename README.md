@@ -4,9 +4,13 @@ Over the past decade, significant attention has been dedicated to developing pra
 This project focuses on exploring the potential applications of the ANC methodology through the implementation of ANC systems in MatLab, utilizing adaptive algorithms (LMS, NLMS, RLS) as well as filtered adaptive algorithms (FxLMS, FxNLMS, FxRLS). The performance of these algorithms will be evaluated through a comparison with a Wiener Filter, utilizing both simulated and real signals.
 
 ## Adaptive Algorithms
-![Figure1](./pictures/AdaptiveSystem.png =500x300)
+![Figure1](pictures/AdaptiveSystem.png =500x300)
 
-![Figure1](https://github.com/Aketirani/ANC/tree/feature/testing/pictures/AdaptiveSystem.png =500x300)
+![test](https://github.com/Aketirani/ANC/tree/feature/testing/pictures/AdaptiveSystem.png)
+
+[test](pictures/AdaptiveSystem.png)
+
+![test](pictures/AdaptiveSystem.png)
 
 The concept of an adaptive system is illustrated above, which comprises an adjustable filter that takes a reference signal input `x(n)` and generates an anti-noise filter output `y(n)`. The objective is to minimize the estimated error `e(n)`, which signifies the difference between the desired response signal d(n) and the generated `y(n)`. Once the difference is calculated, the algorithm adapts the filter coefficients based on the difference. In this context, `P(z)` and `W(z)` represent the impulse response of the primary path and the estimated filter weights, respectively.
 
