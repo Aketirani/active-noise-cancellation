@@ -39,11 +39,11 @@ The above diagram depicts the impulse response filter of the secondary path, den
 |
 ├── .pre-commit-config.yaml     <-- Pre-Commit Configuration
 |
+├── readme.md                   <-- You Are Here
+|
 ├── flowchart.wsd               <-- Pipeline Flowchart
 |
 ├── main.m                      <-- Main Matlab Script
-|
-├── readme.md                   <-- You Are Here
 ```
 
 ## Dataset
