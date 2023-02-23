@@ -31,7 +31,7 @@ for n = 1:length(y)
     yhat(n) = w'*xn;             % get filter output
     e(n) = y(n)-yhat(n);         % calculate error
     zn = Pn*xn;                  % update iteration
-    Kn = zn/(beta+xn'*zn);       % kalman gain, this term may be unstable 
+    Kn = zn/(beta+xn'*zn);       % kalman gain, this term may be unstable
     w = w+Kn*e(n);               % update iteration
     Pn = beta^-1*(Pn-Kn*xn'*Pn); % update iteration
 end

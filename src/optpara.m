@@ -1,6 +1,6 @@
 function [opt_L, opt_mu] = optpara(T, Nexp, L_vec, mu_vec, Pw, alg, plot_save, plot_path)
 % Finds the optimal filter length and step size
-% 
+%
 % Inputs:
 %	T: [1x1] number of iterations (positive integer)
 %	Nexp: [1x1] number of experiments (positive integer)
@@ -42,7 +42,7 @@ for L = L_vec
             % Initializate parameters
             xn = randn(T,1);      % white noise
             d = filter(Pw,1,xn);  % filtered white noise d(n)
-
+            
             % LMS on white noise used for filtered algorithms
             Sw = Pw*0.9;          % secondary path weights
             wn = randn(T,1);      % white noise

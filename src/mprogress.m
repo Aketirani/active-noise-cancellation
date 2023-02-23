@@ -14,7 +14,7 @@ function update = mprogress(n)
 % m  : Value of counter at last display
 % t0 : Time when counter was started
 % c  : Counter string to display
-% p  : Step (seconds) 
+% p  : Step (seconds)
 % tp : Time when counter was last displayed
 %
 % Returns
@@ -49,15 +49,15 @@ end
 
 % Only display the counter if
 %  (1)      (2)    (3)
-if n-m>p || n<m || n==1 
-% 1) we have taken a step greater then p
-% 2) the counter has been restarted
-% 3) the counter is at 100%
-    % Update the counter string 
+if n-m>p || n<m || n==1
+    % 1) we have taken a step greater then p
+    % 2) the counter has been restarted
+    % 3) the counter is at 100%
+    % Update the counter string
     if n<m % New counter
         t0 = tic;
         tp = [];
-        c = '0%';        
+        c = '0%';
     else % Already running counter
         % If we have a XCmdWndView object
         if isa(cwv, 'com.mathworks.mde.cmdwin.XCmdWndView')
@@ -74,7 +74,7 @@ if n-m>p || n<m || n==1
             end
         else % If we do not have a XCmdWndView object
             % Erase the length of the last printed text
-            fprintf('%c',8*ones(length(c)+1*(length(c)>1),1)); 
+            fprintf('%c',8*ones(length(c)+1*(length(c)>1),1));
         end
         % If we are not at 100%
         if n<1

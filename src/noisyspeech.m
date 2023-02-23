@@ -113,13 +113,13 @@ eFxRLS = movmean(eFxRLS, maL);
 % Plot results
 figure(4)
 plot(1:T,10*log10(eW),'k',1:T,10*log10(eLMS),'b',1:T,10*log10(eNLMS),'r',1:T,10*log10(eRLS),'g',...
-     1:T,10*log10(eFxLMS),'c',1:T,10*log10(eFxNLMS),'m',1:T,10*log10(eFxRLS),'y')
+    1:T,10*log10(eFxLMS),'c',1:T,10*log10(eFxNLMS),'m',1:T,10*log10(eFxRLS),'y')
 legend('W','LMS','NLMS','RLS','FxLMS','FxNLMS','FxRLS')
 legend('W','LMS','NLMS','RLS','FxLMS','FxNLMS','FxRLS')
 title('Performance'); xlabel('Time (s)'); ylabel('MSE (dB)')
 figure(5)
 plot(tv,fx-yW,'k', tv,fx-yLMS,'b',tv,fx-yNLMS,'r',tv,fx-yRLS,'g',...
-     tv,fx-yFxLMS,'c',tv,fx-yFxNLMS,'m',tv,fx-yFxRLS,'y')
+    tv,fx-yFxLMS,'c',tv,fx-yFxNLMS,'m',tv,fx-yFxRLS,'y')
 legend('W','LMS','NLMS','RLS','FxLMS','FxNLMS','FxRLS')
 title('Convergence'); xlabel('Time (s)'); ylabel('Error')
 figure(6)
