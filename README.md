@@ -4,17 +4,11 @@ Over the past decade, significant attention has been dedicated to developing pra
 This project focuses on exploring the potential applications of the ANC methodology through the implementation of ANC systems in MatLab, utilizing adaptive algorithms (LMS, NLMS, RLS) as well as filtered adaptive algorithms (FxLMS, FxNLMS, FxRLS). The performance of these algorithms will be evaluated through a comparison with a Wiener Filter, utilizing both simulated and real signals.
 
 ## Adaptive Algorithms
-![Figure1](pictures/AdaptiveSystem.png =500x300)
-
-![test](https://github.com/Aketirani/ANC/tree/feature/testing/pictures/AdaptiveSystem.png)
-
-[test](pictures/AdaptiveSystem.png)
-
-![test](pictures/AdaptiveSystem.png)
+![Figure1](pictures/AdaptiveSystem.png)
 
 The concept of an adaptive system is illustrated above, which comprises an adjustable filter that takes a reference signal input `x(n)` and generates an anti-noise filter output `y(n)`. The objective is to minimize the estimated error `e(n)`, which signifies the difference between the desired response signal d(n) and the generated `y(n)`. Once the difference is calculated, the algorithm adapts the filter coefficients based on the difference. In this context, `P(z)` and `W(z)` represent the impulse response of the primary path and the estimated filter weights, respectively.
 
-![Figure2](./pictures/FilteredSystem.png =500x300)
+![Figure2](./pictures/FilteredSystem.png)
 
 The above diagram depicts the impulse response filter of the secondary path, denoted by `S(z)`, and its estimated filter, `ˆS(z)`, which compensates for secondary path effects. The impulse response filter of the secondary path can be estimated by inputting a sequence of training data. In order to obtain `S(z)`, the system needs to be tested offline before implementing ANC. One way to achieve this is by utilizing the LMS algorithm and feeding white noise as input to the system. The estimated filter, `ˆS(z)`, is the inverse of the impulse response filter, obtained by transforming the impulse response of the secondary path into the frequency domain, taking its inverse, and then bringing it back into the time domain. Subsequently, the algorithm processes a filtered reference signal input, denoted as `x′(n)`, and computes the estimated error, `e(n)`, which is the difference between the desired response signal, d(n), and the anti-noise filtered output, `y′(n)`.
 
