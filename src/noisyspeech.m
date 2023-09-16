@@ -69,9 +69,11 @@ mu_wn = 0.1;          % step size
 [yFxRLS,eFxRLS] = fxrls(x, d, L, beta, lambda, Sw, Shw, Shx);
 
 % Create table
+fprintf('\n<strong>NOISE REDUCTION RESULTS:</strong>\n');
 methods = {'W', 'LMS', 'NLMS', 'RLS', 'FxLMS', 'FxNLMS', 'FxRLS'};
 mse = [mean(eW); mean(eLMS); mean(eNLMS); mean(eRLS); mean(eFxLMS); mean(eFxNLMS); mean(eFxRLS)];
 Te = table(methods', mse, 'VariableNames', {'Method', 'Error'});
+disp(Te);
 
 % Play audio
 if strcmpi(play,'none')

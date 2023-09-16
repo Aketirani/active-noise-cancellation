@@ -42,14 +42,14 @@ for i = 1:Nexp
     % Initializate parameters
     xn = randn(T,1);      % white noise
     d = filter(Pw,1,xn);  % filtered white noise d(n)
-
+    
     % LMS on white noise used for filtered algorithms
     Sw = Pw*0.9;          % secondary path weights
     wn = randn(T,1);      % white noise
     yn = filter(Sw,1,wn); % desired signal
     mu_wn = 0.1;          % step size
     [~, ~, Shw, Shx] = lms(wn, yn, L, mu_wn);
-
+    
     % Algorithms
     [yW, eW(:,i)] = wiener(xn, d, L);
     [yLMS, eLMS(:,i)] = lms(xn, d, L, mu_LMS);
@@ -58,7 +58,7 @@ for i = 1:Nexp
     [yFxLMS, eFxLMS(:,i)] = fxlms(xn, d, L, mu_FxLMS, Sw, Shw, Shx);
     [yFxNLMS, eFxNLMS(:,i)] = fxnlms(xn, d, L, mu_FxNLMS, Sw, Shw, Shx, delta);
     [yFxRLS, eFxRLS(:,i)] = fxrls(xn, d, L, beta, lambda, Sw, Shw, Shx);
-
+    
     mprogress(i/Nexp);   % elapsed and remaining time
 end
 
@@ -72,9 +72,11 @@ mse_fxnlms = sum(eFxNLMS,2)/Nexp;
 mse_fxrls = sum(eFxRLS,2)/Nexp;
 
 % Create table
+fprintf('\n<strong>SIMULATION RESULTS:</strong>\n');
 methods = {'W', 'LMS', 'NLMS', 'RLS', 'FxLMS', 'FxNLMS', 'FxRLS'};
 mse = [mse_w(end); mse_lms(end); mse_nlms(end); mse_rls(end); mse_fxlms(end); mse_fxnlms(end); mse_fxrls(end)];
 Te = table(methods', mse, 'VariableNames', {'Method', 'Error'});
+disp(Te);
 
 % Plot results
 figure(1)

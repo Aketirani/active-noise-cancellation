@@ -42,14 +42,14 @@ for L = L_vec
             % Initializate parameters
             xn = randn(T,1);      % white noise
             d = filter(Pw,1,xn);  % filtered white noise d(n)
-
+            
             % LMS on white noise used for filtered algorithms
             Sw = Pw*0.9;          % secondary path weights
             wn = randn(T,1);      % white noise
             yn = filter(Sw,1,wn); % desired signal
             mu_wn = 0.1;          % step size
             [~, ~, Shw, Shx] = lms(wn, yn, L, mu_wn);
-
+            
             % Algorithms
             if strcmpi(alg,'w')
                 [~, eLMS(:,i)] = wiener(xn, d, L);
@@ -82,6 +82,9 @@ end
 [~, idx_f] = min(mse_mat);
 opt_L = L_vec(idx_f(idx_v));
 opt_mu = mu_vec(idx_v);
+fprintf('\n<strong>OPTIMAL PARAMETERS RESULTS:</strong>\n');
+Te = table({alg}, opt_L, opt_mu, 'VariableNames', {'Algorithm', 'Filter Length', 'Step Size'});
+disp(Te);
 
 % Plot results
 figure(3)
