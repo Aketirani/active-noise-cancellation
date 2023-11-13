@@ -1,6 +1,6 @@
 @startuml Pipeline Flowchart
 |ANC|
-package "main.m" {
+package "anc.m" {
     :start|
     :load data;
     :initialize variables;

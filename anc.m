@@ -1,7 +1,7 @@
 % Main script
-clear, clc, clf % clear
-addpath('src'); % add path
-rng('default')  % generate the same random numbers
+clear, clc, clf      % clear
+addpath('src');      % add path
+rng('default')       % generate the same random numbers
 
 % Load data
 load('data/speech')  % load speech
@@ -21,9 +21,9 @@ plot_save = true;
 plot_path = 'plots/';
 
 % Initializate parameters
-T = 2000;   % iterations
-Nexp = 500; % experiments
-L = 10;     % filter length
+T = 2000;            % iterations
+Nexp = 500;          % experiments
+L = 10;              % filter length
 
 % Run simulate adaptive filters
 if sim_mode == true
@@ -32,7 +32,6 @@ end
 
 % Run optimize parameters
 if optpara_mode == true
-    % Initializate parameters
     L_vec = 8:16;           % filter length vector
     mu_vec = 0.01:0.01:0.1; % step size vector
     alg = 'LMS';            % algorithm
@@ -43,6 +42,6 @@ end
 
 % Run noise reduction on noisy speech
 if ns_mode == true
-    play = 'none'; % audio to play
+    play = 'none';          % audio to play
     Te = noisyspeech(s, x, L, Pw, play, plot_save, plot_path);
 end
