@@ -126,7 +126,7 @@ legend('W','LMS','NLMS','RLS','FxLMS','FxNLMS','FxRLS')
 title('Convergence'); xlabel('Time (s)'); ylabel('Error')
 figure(6)
 signals = {s, fx, d, d-yFxRLS};
-titles = [{'Speech'},{'Noise'},{'Noisy speech'},{'Filtered output'}];
+titles = [{'Speech'},{'Noise'},{'Noisy Speech'},{'Filtered Output'}];
 hw = 256; % hamming window size
 np = 50;  % amount of overlap
 for i = 1:length(signals)
