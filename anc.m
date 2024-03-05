@@ -9,35 +9,35 @@
 %   Ensure the required data files are available before running the script.
 
 % initializate settings
-clear, clc, clf         % clear
-addpath('src');         % add path
-rng('default')          % generate the same random numbers
+clear, clc, clf           % clear
+addpath(genpath('src'));  % add src path
+rng('default')            % generate the same random numbers
 
 % set modes
-sim_mode = true;        % simulation mode
-optpara_mode = true;    % optimize parameters mode
-ns_mode = true;         % noisy speech mode
+sim_mode = true;          % simulation mode
+optpara_mode = true;      % optimize parameters mode
+ns_mode = true;           % noisy speech mode
 
 % set plots
-plot_save = true;       % save the plots
-plot_path = 'plots/';   % path of the plots
+plot_save = true;         % save the plots
+plot_path = 'plots/';     % path of the plots
 
 % load data
-load('data/speech')     % load speech
-load('data/noise')      % load noise
-load('data/bpir')       % load filter
-s = speech;             % speech x(n)
-x = noise;              % noise
-Pw = bpir;              % filter P(z)
+load('data/speech')       % load speech
+load('data/noise')        % load noise
+load('data/bpir')         % load filter
+s = speech;               % speech x(n)
+x = noise;                % noise
+Pw = bpir;                % filter P(z)
 
 % initializate parameters
-T = 2000;               % iterations
-Nexp = 500;             % experiments
-L = 10;                 % filter length
-L_vec = 8:16;           % filter length vector
-mu_vec = 0.01:0.01:0.1; % step size vector
-alg = 'LMS';            % algorithm
-play = 'none';          % audio to play
+T = 2000;                 % iterations
+Nexp = 500;               % experiments
+L = 10;                   % filter length
+L_vec = 8:16;             % filter length vector
+mu_vec = 0.01:0.01:0.1;   % step size vector
+alg = 'LMS';              % algorithm
+play = 'none';            % audio to play
 
 % run simulate adaptive filters
 if sim_mode == true
