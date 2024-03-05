@@ -8,6 +8,7 @@
 %   Adjust the parameters and modes according to specific requirements.
 %   Ensure the required data files are available before running the script.
 
+% initializate settings
 clear, clc, clf         % clear
 addpath('src');         % add path
 rng('default')          % generate the same random numbers
