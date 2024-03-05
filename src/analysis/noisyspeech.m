@@ -132,14 +132,14 @@ np = 50;  % amount of overlap
 for i = 1:length(signals)
     subplot(length(signals),1,i);
     [S, F, T] = spectrogram(signals{i}, hw, np, [], fs);
-    imagesc(T, F, 20*log10(abs(S))); % convert to dB
-    set(gca,'YDir','normal');        % flip y-axis direction
+    imagesc(T, F, 20*log10(abs(S)));
+    set(gca,'YDir','normal');
     title(titles(i)); xlabel('Time (s)'); ylabel('Frequency (Hz)');
 end
 
 % save figures to plot_path
 if plot_save == true
-    saveas(figure(4), [plot_path 'PerformanceNS.png']);
-    saveas(figure(5), [plot_path 'ConvergenceNS.png']);
-    saveas(figure(6), [plot_path 'NoiseSpeech.png']);
+    saveas(figure(4), [plot_path 'NoisySpeechPerformance.png']);
+    saveas(figure(5), [plot_path 'NoisySpeechConvergence.png']);
+    saveas(figure(6), [plot_path 'NoisySpeechComparisons.png']);
 end

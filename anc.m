@@ -36,10 +36,10 @@ d = 4;                   % duration of the recording
 r = 'data/rec.mat';      % name of the recording
 p = 0;                   % play the recording
 T = 2000;                % iterations
-Nexp = 500;              % experiments
+Nexp = 200;              % experiments
 L = 10;                  % filter length
-L_vec = 8:16;            % filter length vector
-mu_vec = 0.01:0.01:0.1;  % step size vector
+L_vec = 8:2:14;          % filter length vector
+mu_vec = 0.01:0.02:0.1;  % step size vector
 alg = 'LMS';             % algorithm
 play = 'none';           % audio to play
 
