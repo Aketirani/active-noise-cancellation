@@ -2,8 +2,11 @@
 |ANC|
 package "anc.m" {
     :start|
+    :initializate settings;
+    :set modes;
+    :set plots;
     :load data;
-    :initialize variables;
+    :initialize parameters;
     :simulate adaptive filters;
     :optimize parameters;
     :noise reduction on noisy speech;

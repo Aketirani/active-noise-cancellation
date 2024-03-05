@@ -13,6 +13,15 @@ clear, clc, clf         % clear
 addpath('src');         % add path
 rng('default')          % generate the same random numbers
 
+% set modes
+sim_mode = true;        % simulation mode
+optpara_mode = true;    % optimize parameters mode
+ns_mode = true;         % noisy speech mode
+
+% set plots
+plot_save = true;       % save the plots
+plot_path = 'plots/';   % path of the plots
+
 % load data
 load('data/speech')     % load speech
 load('data/noise')      % load noise
@@ -20,15 +29,6 @@ load('data/bpir')       % load filter
 s = speech;             % speech x(n)
 x = noise;              % noise
 Pw = bpir;              % filter P(z)
-
-% modes
-sim_mode = true;        % simulation mode
-optpara_mode = true;    % optimize parameters mode
-ns_mode = true;         % noisy speech mode
-
-% plot save
-plot_save = true;       % save the plots
-plot_path = 'plots/';   % path of the plots
 
 % initializate parameters
 T = 2000;               % iterations
