@@ -2,17 +2,17 @@ function Te = simulation(T, Nexp, L, Pw, plot_save, plot_path)
 % Simulates adaptive filters and evaluate their performance
 %
 % Inputs:
-%	T: the number of iterations (positive integer)
-%	Nexp: the number of experiments (positive integer)
-%   Pw: [Lx1] impulse response of the system
-%	L: [1x1] filter length (positive integer)
+%	T    : the number of iterations (positive integer)
+%	Nexp : the number of experiments (positive integer)
+%   Pw   : [Lx1] impulse response of the system
+%	L    : [1x1] filter length (positive integer)
 %   plot_save: save the figure into a png if set to true (logical)
 %   plot_path: path to save the figure (string)
 %
 % Outputs:
-%	Te: [7x2] table containing the error for each adaptive filter algorithm
+%	Te   : [7x2] table containing the error for each adaptive filter algorithm
 
-% Check inputs
+% check inputs
 assert(nargin == 6, 'Invalid number of input arguments. The function requires 6 input arguments.')
 assert(isnumeric(T) && isscalar(T) && T > 0, 'T must be a positive scalar.')
 assert(isnumeric(Nexp) && isscalar(Nexp) && Nexp > 0, 'Nexp must be a positive scalar.')
@@ -21,14 +21,14 @@ assert(isvector(Pw), 'Pw must be a vector.')
 assert(islogical(plot_save), 'plot_save must be a boolean value.');
 assert(ischar(plot_path), 'play must be a string.')
 
-% Initialize variables
+% initialize variables
 e = struct();
 fields = {'W', 'LMS', 'NLMS', 'RLS', 'FxLMS', 'FxNLMS', 'FxRLS'};
 for i = 1:length(fields)
     e.(fields{i}) = zeros(T, Nexp);
 end
 
-% Define algorithm parameters
+% define algorithm parameters
 mu_LMS = 0.05;  % lms step size
 mu_NLMS = 0.5;  % nlms step size
 delta = 0.01;   % regularization parameter
@@ -37,9 +37,9 @@ lambda = 0.1;   % regularization
 mu_FxLMS = 0.1; % fxlms step size
 mu_FxNLMS = 1;  % fxnlms step size
 
-% Compute mean square error for all experiments
+% compute mean square error for all experiments
 for i = 1:Nexp
-    % Initializate parameters
+    % initializate parameters
     xn = randn(T,1);      % white noise
     d = filter(Pw,1,xn);  % filtered white noise d(n)
 
@@ -50,7 +50,7 @@ for i = 1:Nexp
     mu_wn = 0.1;          % step size
     [~, ~, Shw, Shx] = lms(wn, yn, L, mu_wn);
 
-    % Algorithms
+    % algorithms
     [yW, eW(:,i)] = wiener(xn, d, L);
     [yLMS, eLMS(:,i)] = lms(xn, d, L, mu_LMS);
     [yNLMS, eNLMS(:,i)] = nlms(xn, d, L, mu_NLMS, delta);
@@ -62,7 +62,7 @@ for i = 1:Nexp
     mprogress(i/Nexp);   % elapsed and remaining time
 end
 
-% Compute average mean square error for all experiments
+% compute average mean square error for all experiments
 mse_w = sum(eW,2)/Nexp;
 mse_lms = sum(eLMS,2)/Nexp;
 mse_nlms = sum(eNLMS,2)/Nexp;
@@ -71,14 +71,14 @@ mse_fxlms = sum(eFxLMS,2)/Nexp;
 mse_fxnlms = sum(eFxNLMS,2)/Nexp;
 mse_fxrls = sum(eFxRLS,2)/Nexp;
 
-% Create table
+% create table
 fprintf('\n<strong>SIMULATION RESULTS:</strong>\n');
 methods = {'W', 'LMS', 'NLMS', 'RLS', 'FxLMS', 'FxNLMS', 'FxRLS'};
 mse = [mse_w(end); mse_lms(end); mse_nlms(end); mse_rls(end); mse_fxlms(end); mse_fxnlms(end); mse_fxrls(end)];
 Te = table(methods', mse, 'VariableNames', {'Method', 'Error'});
 disp(Te);
 
-% Plot results
+% plot results
 figure(1)
 plot(1:T,10*log10(mse_w),'k',1:T,10*log10(mse_lms),'b',1:T,10*log10(mse_nlms),'r',1:T,10*log10(mse_rls),'g',...
     1:T,10*log10(mse_fxlms),'c',1:T,10*log10(mse_fxnlms),'m',1:T,10*log10(mse_fxrls),'y')
@@ -90,7 +90,7 @@ plot(1:T,d-yW,'k',1:T,d-yLMS,'b',1:T,d-yNLMS,'r',1:T,d-yRLS,'g',...
 legend('W','LMS','NLMS','RLS','FxLMS','FxNLMS','FxRLS')
 title('Convergence'); xlabel('Iterations'); ylabel('Error')
 
-% Save figures to plot_path
+% save figures to plot_path
 if plot_save == true
     saveas(figure(1), [plot_path 'PerformanceSIM.png']);
     saveas(figure(2), [plot_path 'ConvergenceSIM.png']);

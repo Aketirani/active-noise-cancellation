@@ -2,41 +2,38 @@ function update = mprogress(n)
 % Displays elapsed and remaining time of a for-loop
 %
 % Usage:
-%    mprogress (with no arguments) resets and displays the counter.
+%	mprogress (with no arguments) resets and displays the counter.
+%   mprogress(t) for t in [0,1] updates at t*100% if 1 sec passed & increased >= 1% since last update.
 %
-%    mprogress(t) where t is a number between 0 and 1 displays/updates the
-%    counter at t*100 percent. The counter is only updated if at least 1
-%    second has passed and the counter has increased by at least 1
-%    percentage point since the last update.
+% Variables:
+%	n  : Current value of counter (between 0 and 1)
+%	m  : Value of counter at last display
+%	t0 : Time when counter was started
+%	c  : Counter string to display
+%	p  : Step (seconds)
+%	tp : Time when counter was last displayed
 %
-% Variables
-% n  : Current value of counter (btwn 0 and 1)
-% m  : Value of counter at last display
-% t0 : Time when counter was started
-% c  : Counter string to display
-% p  : Step (seconds)
-% tp : Time when counter was last displayed
-%
-% Returns
-% update: Boolean, whether or not the counter was updated
+% Returns:
+%	update: Boolean, whether or not the counter was updated
 
+% define persistent variables
 persistent m t0 c p tp cwv
 
-% If no update, return false
+% if no update, return false
 update = false;
 
-% Minimum change in counter before it is displayed
+% minimum change in counter before it is displayed
 N0 = .01;
 
-% Minimum time (seconds) between counter is displayed
+% minimum time (seconds) between counter is displayed
 T0 = 1;
 
-% No arguments: restart the counter
+% no arguments: restart the counter
 if nargin==0, n = 0; end
 if isempty(m), m = inf; end
 if isempty(p) || n<m, p = N0; end
 
-% Get command window
+% get command window
 if isempty(cwv)
     try
         desktop = com.mathworks.mde.desk.MLDesktop.getInstance;
@@ -47,58 +44,59 @@ if isempty(cwv)
     end
 end
 
-% Only display the counter if
+% only display the counter if
+% 1) we have taken a step greater then p
+% 2) the counter has been restarted
+% 3) the counter is at 100%
 %  (1)      (2)    (3)
 if n-m>p || n<m || n==1
-    % 1) we have taken a step greater then p
-    % 2) the counter has been restarted
-    % 3) the counter is at 100%
-    % Update the counter string
-    if n<m % New counter
+    % update the counter string
+    if n<m % new counter
         t0 = tic;
         tp = [];
         c = '0%';
-    else % Already running counter
-        % If we have a XCmdWndView object
+    else % already running counter
+        % if we have a XCmdWndView object
         if isa(cwv, 'com.mathworks.mde.cmdwin.XCmdWndView')
-            % Get the text in the command window
+            % get the text in the command window
             s = char(cwv.getText);
-            % Find the occurences of the last printed text
+            % find the occurences of the last printed text
             i = strfind(s, c);
-            % Find occurences of line break
+            % find occurences of line break
             j = strfind(s, 10);
-            % If the text occurs, erase the last occurence
+            % if the text occurs, erase the last occurence
             if ~isempty(i)
                 fprintf('%c',8*ones(j(end)-i(end)+1,1));
                 fprintf('%s', s(i(end)+length(c)+1:j(end)));
             end
-        else % If we do not have a XCmdWndView object
-            % Erase the length of the last printed text
+        else % if we do not have a XCmdWndView object
+            % erase the length of the last printed text
             fprintf('%c',8*ones(length(c)+1*(length(c)>1),1));
         end
-        % If we are not at 100%
+        % if we are not at 100%
         if n<1
             c = sprintf('%0.f%% (%s) %s', ...
                 n*100, mtime(toc(t0)), mtime(toc(t0)*(1-n)/n));
-        else % At 100% only display 100% and elapsed time
+        else % at 100% only display 100% and elapsed time
             c = sprintf('100%% (%s)', mtime(toc(t0)));
         end
     end
-    % Display counter string
+    % display counter string
     disp(c);
-    % Refresh display
+    % refresh display
     pause(0); drawnow;
-    % If timer has been displayed before, set p to make next
+    % if timer has been displayed before, set p to make next
     % update in T0 sec and counter has incresed more than N0
     if ~isempty(tp), p = max(T0*p/toc(tp), N0); end
-    % Remember when the counter was last displayed
+    % remember when the counter was last displayed
     tp = tic;
-    % Remember the value of the counter that was displayed
+    % remember the value of the counter that was displayed
     m = n;
-    % Counter has been updated
+    % counter has been updated
     update = true;
 end
 
+% format time duration in hours, minutes, and seconds
 function tstr = mtime(t)
 if t<60*60
     tstr = sprintf('%02.f:%02.f', floor(t/60), mod(t,60));
