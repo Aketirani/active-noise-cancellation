@@ -43,10 +43,16 @@ To get started with this project, ensure that you have MATLAB installed on your 
 Clone the repository to your local machine and navigate to the project's root directory to access all the necessary files and scripts.
 
 ### Dataset
-In this context, the input signal, denoted as `x(n)`, is generated from the `noise.mat` file, while the speech signal, represented by `speech.mat`, is added to the desired signal, `d(n)`. It is crucial for the noise signal to be uncorrelated with the speech signal, as otherwise, the algorithms may inadvertently remove portions of the speech signal. To prevent this, the signals must be distinguishable. Additionally, the impulse response filter of the primary path, `P(z)`, is derived from the `bpir.mat` file.
+In this context, the input signal, denoted as `x(n)`, is generated from the `noise.mat` file, while the speech signal, represented by `speech.mat`, is added to the desired signal, `d(n)`. It is crucial for the noise signal to be uncorrelated with the speech signal, as otherwise, the algorithms may inadvertently remove portions of the speech signal. To prevent this, the signals must be distinguishable. Additionally, the impulse response filter of the primary path, `P(z)`, is derived from the `bpir.mat` file. The recorded audio data is stored in the `rec.mat` file, which users themselves can update.
 
 ### Exectuion
 Execute `anc.m` to initiate the entire pipeline.
+
+Following arguments can be specified:
+- `rec_mode`: Run the record audio step
+- `sim_mode`: Run the simulate adaptive filters step
+- `optpara_mode`: Run the optimize parameters step
+- `ns_mode`: Run the noise reduction on noisy speech step
 
 ### Conclusion
 Obtaining the most feasible result of the adaptive algorithms is contingent upon identifying the optimal parameter values, which can prove challenging, considering the multitude of variables that must be considered. The selection of the appropriate algorithm hinges on the desired outcome. While filtered adaptive algorithms demonstrate improved error floor performance, their convergence speed is slower when compared to non-filtered adaptive algorithms.

@@ -7,7 +7,7 @@ function Te = noisyspeech(s, x, L, Pw, play, plot_save, plot_path)
 %	L    : [1x1] filter length (positive integer)
 %   Pw   : [Lx1] impulse response of the system
 %   play : string indicating which audio to play, options are:
-%         - none: play nothing
+%         - none   : play nothing
 %         - s      : play clean speech signal
 %         - fx     : play filtered noise signal
 %         - d      : play noisy speech signal
