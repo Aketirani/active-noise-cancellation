@@ -2,11 +2,11 @@ function Te = noisyspeech(s, x, L, Pw, play, plot_save, plot_path)
 % Noise reduction on noisy speech using different adaptive filters
 %
 % Inputs:
-%	s: [1xN] vector of the clean speech signal
-%   x: [1xN] vector of the noisy signal
-%	L: [1x1] filter length (positive integer)
-%   Pw: [Lx1] impulse response of the system
-%   play: string indicating which audio to play, options are:
+%	s    : [1xN] vector of the clean speech signal
+%   x    : [1xN] vector of the noisy signal
+%	L    : [1x1] filter length (positive integer)
+%   Pw   : [Lx1] impulse response of the system
+%   play : string indicating which audio to play, options are:
 %         - 'none': play nothing
 %         - 's': play clean speech signal
 %         - 'fx': play filtered noise signal
@@ -22,9 +22,9 @@ function Te = noisyspeech(s, x, L, Pw, play, plot_save, plot_path)
 %   plot_path: path to save the figure (string)
 %
 % Outputs:
-%	Te: [7x2] table containing the error for each adaptive filter algorithm
+%	Te   : [7x2] table containing the error for each adaptive filter algorithm
 
-% Validate inputs
+% validate inputs
 assert(nargin == 7, 'Invalid number of input arguments. The function requires 7 input arguments.')
 assert(isvector(s), 's must be a vector.')
 assert(isvector(x), 'x must be a vector.')
@@ -37,7 +37,7 @@ assert(length(s) == length(x), 's and x must have the same length.')
 assert(any(strcmpi(play, {'none', 's', 'fx', 'd', 'dfx', 'lms', 'nlms', 'rls', 'fxlms', 'fxnlms', 'fxrls'})), ...
     'play is invalid. It must be one of the following: ''none'', ''s'', ''fx'', ''d'', ''dfx'', ''lms'', ''nlms'', ''rls'', ''fxlms'', ''fxnlms'', or ''fxrls''.')
 
-% Initializate parameters
+% initializate parameters
 fs = 8000;                 % sample rate
 T = length(s);             % number of observations
 fx = filter(Pw,1,x);       % filtered noise
@@ -45,7 +45,7 @@ d = s+fx;                  % speech + filtered noise d(n)
 time = T/fs;               % total time of audio
 tv = 0:time/T:time-time/T; % time vector
 
-% Define algorithm parameters
+% define algorithm parameters
 mu_LMS = 0.05;  % lms step size
 delta = 0.1;    % regularization parameter
 beta = 0.997;   % forget factor
@@ -59,7 +59,7 @@ yn = filter(Sw,1,wn); % desired signal
 mu_wn = 0.1;          % step size
 [~, ~, Shw, Shx] = lms(wn, yn, L, mu_wn);
 
-% Algorithms
+% algorithms
 [yW,eW] = wiener(x, d, L);
 [yLMS,eLMS] = lms(x, d, L, mu_LMS);
 [yNLMS,eNLMS] = nlms(x, d, L, mu_LMS, delta);
@@ -68,14 +68,14 @@ mu_wn = 0.1;          % step size
 [yFxNLMS,eFxNLMS] = fxnlms(x, d, L, mu_FxLMS, Sw, Shw, Shx, delta);
 [yFxRLS,eFxRLS] = fxrls(x, d, L, beta, lambda, Sw, Shw, Shx);
 
-% Create table
+% create table
 fprintf('\n<strong>NOISE REDUCTION RESULTS:</strong>\n');
 methods = {'W', 'LMS', 'NLMS', 'RLS', 'FxLMS', 'FxNLMS', 'FxRLS'};
 mse = [mean(eW); mean(eLMS); mean(eNLMS); mean(eRLS); mean(eFxLMS); mean(eFxNLMS); mean(eFxRLS)];
 Te = table(methods', mse, 'VariableNames', {'Method', 'Error'});
 disp(Te);
 
-% Play audio
+% play audio
 if strcmpi(play,'none')
     % nothing
 elseif strcmpi(play,'s')
@@ -102,7 +102,7 @@ elseif strcmpi(play,'fxrls')
     sound(d-yFxRLS)  % fxrls
 end
 
-% Apply moving average filter
+% apply moving average filter
 maL = 100; % filter length
 eW = movmean(eW, maL);
 eLMS = movmean(eLMS, maL);
@@ -112,7 +112,7 @@ eFxLMS = movmean(eFxLMS, maL);
 eFxNLMS = movmean(eFxNLMS, maL);
 eFxRLS = movmean(eFxRLS, maL);
 
-% Plot results
+% plot results
 figure(4)
 plot(1:T,10*log10(eW),'k',1:T,10*log10(eLMS),'b',1:T,10*log10(eNLMS),'r',1:T,10*log10(eRLS),'g',...
     1:T,10*log10(eFxLMS),'c',1:T,10*log10(eFxNLMS),'m',1:T,10*log10(eFxRLS),'y')
@@ -137,7 +137,7 @@ for i = 1:length(signals)
     title(titles(i)); xlabel('Time (s)'); ylabel('Frequency (Hz)');
 end
 
-% Save figures to plot_path
+% save figures to plot_path
 if plot_save == true
     saveas(figure(4), [plot_path 'PerformanceNS.png']);
     saveas(figure(5), [plot_path 'ConvergenceNS.png']);

@@ -2,20 +2,20 @@ function [opt_L, opt_mu] = optpara(T, Nexp, L_vec, mu_vec, Pw, alg, plot_save, p
 % Finds the optimal filter length and step size
 %
 % Inputs:
-%	T: [1x1] number of iterations (positive integer)
-%	Nexp: [1x1] number of experiments (positive integer)
-%	L_vec: [1xM] filter length vector (positive integers)
+%	T     : [1x1] number of iterations (positive integer)
+%	Nexp  : [1x1] number of experiments (positive integer)
+%	L_vec : [1xM] filter length vector (positive integers)
 %	mu_vec: [1xN] step size vector (positive scalars)
-%   Pw: [Lx1] impulse response of the system
-%   alg: [char] algorithm type
+%   Pw    : [Lx1] impulse response of the system
+%   alg   : [char] algorithm type
 %   plot_save: save the figure into a png if set to true (logical)
 %   plot_path: path to save the figure (string)
 %
 % Outputs:
-%	opt_L: [1x1] optimal filter length for the lowest mean squared error (positive integer)
+%	opt_L : [1x1] optimal filter length for the lowest mean squared error (positive integer)
 %	opt_mu: [1x1] optimal step size for the lowest mean squared error (positive integer)
 
-% Validate inputs
+% validate inputs
 assert(nargin == 8, 'Invalid number of input arguments. The function requires 8 input arguments.')
 assert(isscalar(T) && T>0, 'T should be a positive scalar')
 assert(isscalar(Nexp) && Nexp>0, 'Nexp should be a positive scalar')
@@ -24,22 +24,22 @@ assert(isvector(mu_vec) && all(mu_vec > 0), 'mu_vec should be a vector of positi
 assert(islogical(plot_save), 'plot_save must be a boolean value.');
 assert(ischar(plot_path), 'play must be a string.')
 
-% Initializate parameters
+% initializate parameters
 c1 = 1; % counter 1
 c2 = 1; % counter 2
 mse_mat = zeros(length(L_vec),length(mu_vec)); % reserve memory
 
-% Define algorithm parameters
+% define algorithm parameters
 delta = 0.01;   % regularization parameter
 beta = 0.997;   % forget factor
 lambda = 0.1;   % regularization
 
-% Compute mean square error for all experiments
+% compute mean square error for all experiments
 for L = L_vec
     for mu = mu_vec
         eLMS = zeros(T,Nexp);    % reserve memory
         for i = 1:Nexp
-            % Initializate parameters
+            % initializate parameters
             xn = randn(T,1);      % white noise
             d = filter(Pw,1,xn);  % filtered white noise d(n)
 
@@ -50,7 +50,7 @@ for L = L_vec
             mu_wn = 0.1;          % step size
             [~, ~, Shw, Shx] = lms(wn, yn, L, mu_wn);
 
-            % Algorithms
+            % algorithms
             if strcmpi(alg,'w')
                 [~, eLMS(:,i)] = wiener(xn, d, L);
             elseif strcmpi(alg,'lms')
@@ -75,10 +75,10 @@ for L = L_vec
     c2 = c2+1;
     mprogress(c2/length(L_vec)); % elapsed and remaining time for L
 end
-% Find the value of the lowest mean square error and its index
+% find the value of the lowest mean square error and its index
 [mse_min_v, idx_v] = min(min(mse_mat));
 
-% Find the filter belonging to the lowest mean square error and its index
+% find the filter belonging to the lowest mean square error and its index
 [~, idx_f] = min(mse_mat);
 opt_L = L_vec(idx_f(idx_v));
 opt_mu = mu_vec(idx_v);
@@ -86,7 +86,7 @@ fprintf('\n<strong>OPTIMAL PARAMETERS RESULTS:</strong>\n');
 Te = table({alg}, opt_L, opt_mu, 'VariableNames', {'Algorithm', 'Filter Length', 'Step Size'});
 disp(Te);
 
-% Plot results
+% plot results
 figure(3)
 for i = 1:length(L_vec)
     plot(mu_vec,10*log10(mse_mat(i,:))); hold on
@@ -96,7 +96,7 @@ hold off
 title(alg); xlabel('Step Size'); ylabel('MSE (dB)')
 legend('L=8','L=9','L=10','L=11','L=12','L=13','L=14','L=15','L=16','ME')
 
-% Save figures to plot_path
+% save figures to plot_path
 if plot_save == true
     saveas(figure(3), [plot_path strcat('Optimal', alg,'.png')]);
 end
