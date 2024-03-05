@@ -24,5 +24,5 @@ w = R\rdx(L:end);              % estimated weights
 yhat = filter(w,1,y);          % filters the data
 e = y-yhat;                    % calculate error
 
-% set output variables
-se = e.^2; % squared error
+% calculate squared error
+se = e.^2;

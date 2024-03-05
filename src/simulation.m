@@ -6,8 +6,8 @@ function Te = simulation(T, Nexp, L, Pw, plot_save, plot_path)
 %	Nexp : the number of experiments (positive integer)
 %   Pw   : [Lx1] impulse response of the system
 %	L    : [1x1] filter length (positive integer)
-%   plot_save: save the figure into a png if set to true (logical)
-%   plot_path: path to save the figure (string)
+%   plot_save : save the figure into a png if set to true (logical)
+%   plot_path : path to save the figure (string)
 %
 % Outputs:
 %	Te   : [7x2] table containing the error for each adaptive filter algorithm

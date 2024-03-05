@@ -13,7 +13,7 @@ function [yhat, se] = fxnlms(x, y, L, mu, Sw, Shw, Shx, delta)
 %
 % Outputs:
 %   yhat : [Nx1] filter output
-%   se : [Nx1] squared error
+%   se   : [Nx1] squared error
 
 % validate inputs
 assert(length(x) == length(y), 'Input and desired signals must have the same length')
@@ -56,6 +56,6 @@ for n = 1:length(y)
     Ww = Ww + umu * e(n) * Shy;       % update weights
 end
 
-% set output variables
+% calculate output variables
 yhat = Sy; % filter output
 se = e.^2; % squared error

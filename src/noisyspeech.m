@@ -7,19 +7,19 @@ function Te = noisyspeech(s, x, L, Pw, play, plot_save, plot_path)
 %	L    : [1x1] filter length (positive integer)
 %   Pw   : [Lx1] impulse response of the system
 %   play : string indicating which audio to play, options are:
-%         - 'none': play nothing
-%         - 's': play clean speech signal
-%         - 'fx': play filtered noise signal
-%         - 'd': play noisy speech signal
-%         - 'dfx': play ideal noise-free signal
-%         - 'lms': play noisy speech signal filtered using LMS algorithm
-%         - 'nlms': play noisy speech signal filtered using NLMS algorithm
-%         - 'rls': play noisy speech signal filtered using RLS algorithm
-%         - 'fxlms': play noisy speech signal filtered using FxLMS algorithm
-%         - 'fxnlms': play noisy speech signal filtered using FxNLMS algorithm
-%         - 'fxrls': play noisy speech signal filtered using FxRLS algorithm
-%   plot_save: save the figure into a png if set to true (logical)
-%   plot_path: path to save the figure (string)
+%         - none: play nothing
+%         - s      : play clean speech signal
+%         - fx     : play filtered noise signal
+%         - d      : play noisy speech signal
+%         - dfx    : play ideal noise-free signal
+%         - lms    : play noisy speech signal filtered using LMS algorithm
+%         - nlms   : play noisy speech signal filtered using NLMS algorithm
+%         - rls    : play noisy speech signal filtered using RLS algorithm
+%         - fxlms  : play noisy speech signal filtered using FxLMS algorithm
+%         - fxnlms : play noisy speech signal filtered using FxNLMS algorithm
+%         - fxrls  : play noisy speech signal filtered using FxRLS algorithm
+%   plot_save : save the figure into a png if set to true (logical)
+%   plot_path : path to save the figure (string)
 %
 % Outputs:
 %	Te   : [7x2] table containing the error for each adaptive filter algorithm
@@ -79,27 +79,27 @@ disp(Te);
 if strcmpi(play,'none')
     % nothing
 elseif strcmpi(play,'s')
-    sound(s)         % speech
+    sound(s)
 elseif strcmpi(play,'fx')
-    sound(fx)        % filtered noise
+    sound(fx)
 elseif strcmpi(play,'d')
-    sound(d)         % noisy speech
+    sound(d)
 elseif strcmpi(play,'dfx')
-    sound(d-fx)      % ideal
+    sound(d-fx)
 elseif strcmpi(play,'w')
-    sound(d-yW)      % weiner
+    sound(d-yW)
 elseif strcmpi(play,'lms')
-    sound(d-yLMS)    % lms
+    sound(d-yLMS)
 elseif strcmpi(play,'nlms')
-    sound(d-yNLMS)   % nlms
+    sound(d-yNLMS)
 elseif strcmpi(play,'rls')
-    sound(d-yRLS)    % rls
+    sound(d-yRLS)
 elseif strcmpi(play,'fxlms')
-    sound(d-yFxLMS)  % fxlms
+    sound(d-yFxLMS)
 elseif strcmpi(play,'fxnlms')
-    sound(d-yFxNLMS) % fxnlms
+    sound(d-yFxNLMS)
 elseif strcmpi(play,'fxrls')
-    sound(d-yFxRLS)  % fxrls
+    sound(d-yFxRLS)
 end
 
 % apply moving average filter

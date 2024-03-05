@@ -33,5 +33,5 @@ for n = 1:length(y)
     w = w+umu*xn*e(n);       % update iteration
 end
 
-% set output variables
-se = e.^2; % squared error
+% calculate squared error
+se = e.^2;

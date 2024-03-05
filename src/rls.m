@@ -36,5 +36,5 @@ for n = 1:length(y)
     Pn = beta^-1*(Pn-Kn*xn'*Pn); % update iteration
 end
 
-% set output variables
-se = e.^2; % squared error
+% calculate squared error
+se = e.^2;
