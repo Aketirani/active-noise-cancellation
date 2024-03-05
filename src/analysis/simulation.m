@@ -92,6 +92,6 @@ title('Convergence'); xlabel('Iterations'); ylabel('Error')
 
 % save figures to plot_path
 if plot_save == true
-    saveas(figure(1), [plot_path 'PerformanceSIM.png']);
-    saveas(figure(2), [plot_path 'ConvergenceSIM.png']);
+    saveas(figure(1), [plot_path 'SimulationPerformance.png']);
+    saveas(figure(2), [plot_path 'SimulationConvergence.png']);
 end

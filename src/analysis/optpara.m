@@ -94,9 +94,9 @@ end
 plot(mu_vec(idx_v),10*log10(mse_min_v),'ro')
 hold off
 title(alg); xlabel('Step Size'); ylabel('MSE (dB)')
-legend('L=8','L=9','L=10','L=11','L=12','L=13','L=14','L=15','L=16','ME')
+legend([strcat('L=', cellstr(num2str(L_vec'))); 'Optimal'])
 
 % save figures to plot_path
 if plot_save == true
-    saveas(figure(3), [plot_path strcat('Optimal', alg,'.png')]);
+    saveas(figure(3), [plot_path strcat('OptimalParameters', alg,'.png')]);
 end
