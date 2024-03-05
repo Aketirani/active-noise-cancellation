@@ -8,8 +8,8 @@ function [opt_L, opt_mu] = optpara(T, Nexp, L_vec, mu_vec, Pw, alg, plot_save, p
 %	mu_vec: [1xN] step size vector (positive scalars)
 %   Pw    : [Lx1] impulse response of the system
 %   alg   : [char] algorithm type
-%   plot_save: save the figure into a png if set to true (logical)
-%   plot_path: path to save the figure (string)
+%   plot_save : save the figure into a png if set to true (logical)
+%   plot_path : path to save the figure (string)
 %
 % Outputs:
 %	opt_L : [1x1] optimal filter length for the lowest mean squared error (positive integer)

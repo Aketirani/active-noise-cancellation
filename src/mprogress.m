@@ -14,7 +14,7 @@ function update = mprogress(n)
 %	tp : Time when counter was last displayed
 %
 % Returns:
-%	update: Boolean, whether or not the counter was updated
+%	update : Boolean, whether or not the counter was updated
 
 % define persistent variables
 persistent m t0 c p tp cwv
@@ -50,58 +50,49 @@ end
 % 3) the counter is at 100%
 %  (1)      (2)    (3)
 if n-m>p || n<m || n==1
-    % update the counter string
     if n<m % new counter
         t0 = tic;
         tp = [];
         c = '0%';
-    else % already running counter
-        % if we have a XCmdWndView object
+    else   % already running counter if we have a XCmdWndView object
         if isa(cwv, 'com.mathworks.mde.cmdwin.XCmdWndView')
-            % get the text in the command window
-            s = char(cwv.getText);
-            % find the occurences of the last printed text
-            i = strfind(s, c);
-            % find occurences of line break
-            j = strfind(s, 10);
-            % if the text occurs, erase the last occurence
-            if ~isempty(i)
+            s = char(cwv.getText); % get the text in the command window
+            i = strfind(s, c);     % find the occurences of the last printed text
+            j = strfind(s, 10);    % find occurences of line break
+            if ~isempty(i)         % if the text occurs, erase the last occurence
                 fprintf('%c',8*ones(j(end)-i(end)+1,1));
                 fprintf('%s', s(i(end)+length(c)+1:j(end)));
             end
-        else % if we do not have a XCmdWndView object
-            % erase the length of the last printed text
+        else   % if we do not have a XCmdWndView object erase the length of the last printed text
             fprintf('%c',8*ones(length(c)+1*(length(c)>1),1));
         end
-        % if we are not at 100%
-        if n<1
-            c = sprintf('%0.f%% (%s) %s', ...
-                n*100, mtime(toc(t0)), mtime(toc(t0)*(1-n)/n));
-        else % at 100% only display 100% and elapsed time
+        if n<1 % if we are not at 100%
+            c = sprintf('%0.f%% (%s) %s', n*100, mtime(toc(t0)), mtime(toc(t0)*(1-n)/n));
+        else   % at 100% only display 100% and elapsed time
             c = sprintf('100%% (%s)', mtime(toc(t0)));
         end
     end
-    % display counter string
-    disp(c);
-    % refresh display
-    pause(0); drawnow;
-    % if timer has been displayed before, set p to make next
-    % update in T0 sec and counter has incresed more than N0
-    if ~isempty(tp), p = max(T0*p/toc(tp), N0); end
-    % remember when the counter was last displayed
-    tp = tic;
-    % remember the value of the counter that was displayed
-    m = n;
-    % counter has been updated
-    update = true;
+    disp(c);           % display counter string
+    pause(0); drawnow; % refresh display
+    if ~isempty(tp)    % check if the timer has been displayed before
+        p = max(T0 * p / toc(tp), N0); % adjust the update rate
+    end
+    tp = tic;          % remember when the counter was last displayed
+    m = n;             % remember the value of the counter that was displayed
+    update = true;     % counter has been updated
 end
 
-% format time duration in hours, minutes, and seconds
 function tstr = mtime(t)
-if t<60*60
+% Format time duration
+% Input:
+%	t    : time duration in seconds
+% Output:
+%   tstr : formatted time string
+
+if t<60*60        % minutes and seconds
     tstr = sprintf('%02.f:%02.f', floor(t/60), mod(t,60));
-elseif t<60*60*24
+elseif t<60*60*24 % hours, minutes, and seconds
     tstr = sprintf('%02.f:%02.f:%02.f', floor(t/60/60), mod(floor(t/60),60), mod(t,60));
-else
+else              % days, hours, minutes, and seconds
     tstr = sprintf('%0.f - %02.f:%02.f:%02.f', floor(t/60/60/24), mod(floor(t/60/60),24), mod(floor(t/60),60), mod(t,60));
 end

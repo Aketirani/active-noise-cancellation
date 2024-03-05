@@ -57,6 +57,6 @@ for n = 1:length(y)
     Ww = Ww+Kn*e(n);                    % update iteration
 end
 
-% set output variables
+% calculate output variables
 yhat = Sy; % filter output
 se = e.^2; % squared error
