@@ -10,8 +10,8 @@ sim_mode: true                          % simulation mode on
 optpara_mode: true                      % optimize parameters mode on
 ns_mode: true                           % noisy speech mode on
 
-% set plots
-plot_save: true                         % save the plots
+% set paths
+res_path: 'results/'                    % path for saving the results
 plot_path: 'plots/'                     % path for saving the plots
 
 % load data
@@ -26,7 +26,7 @@ p: 0                                    % play the recording
 T: 2000                                 % iterations
 N: 200                                  % experiments
 L: 10                                   % filter length
-L_vec: [8, 10, 12, 14]                  % filter length vector
+L_vec: [10, 12, 14, 16]                 % filter length vector
 mu_vec: [0.01, 0.03, 0.05, 0.07, 0.09]  % step size vector
 alg: 'LMS'                              % algorithm
 play: 'none'                            % audio to play

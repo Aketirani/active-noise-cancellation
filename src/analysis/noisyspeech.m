@@ -1,4 +1,4 @@
-function Te = noisyspeech(s, x, L, Pw, play, plot_save, plot_path)
+function Te = noisyspeech(s, x, L, Pw, play, res_path, plot_path)
 % Noise reduction on noisy speech using different adaptive filters
 %
 % Inputs:
@@ -18,10 +18,10 @@ function Te = noisyspeech(s, x, L, Pw, play, plot_save, plot_path)
 %         - fxlms  : play noisy speech signal filtered using FxLMS algorithm
 %         - fxnlms : play noisy speech signal filtered using FxNLMS algorithm
 %         - fxrls  : play noisy speech signal filtered using FxRLS algorithm
-%   plot_save : save the figure into a png if set to true (logical)
+%   res_path  : path to save the result (string)
 %   plot_path : path to save the figure (string)
 %
-% Outputs:
+% Output:
 %	Te   : [7x2] table containing the error for each adaptive filter algorithm
 
 % validate inputs
@@ -31,8 +31,8 @@ assert(isvector(x), 'x must be a vector.')
 assert(isnumeric(L) && isscalar(L) && L > 0, 'L must be a positive scalar.')
 assert(isvector(Pw), 'Pw must be a vector.')
 assert(ischar(play), 'play must be a string.')
-assert(islogical(plot_save), 'plot_save must be a boolean value.');
-assert(ischar(plot_path), 'play must be a string.')
+assert(ischar(res_path), 'result path must be a string.')
+assert(ischar(plot_path), 'plot path must be a string.')
 assert(length(s) == length(x), 's and x must have the same length.')
 assert(any(strcmpi(play, {'none', 's', 'fx', 'd', 'dfx', 'lms', 'nlms', 'rls', 'fxlms', 'fxnlms', 'fxrls'})), ...
     'play is invalid. It must be one of the following: ''none'', ''s'', ''fx'', ''d'', ''dfx'', ''lms'', ''nlms'', ''rls'', ''fxlms'', ''fxnlms'', or ''fxrls''.')
@@ -69,11 +69,14 @@ mu_wn = 0.1;          % step size
 [yFxRLS,eFxRLS] = fxrls(x, d, L, beta, lambda, Sw, Shw, Shx);
 
 % create table
-fprintf('\n<strong>NOISE REDUCTION RESULTS:</strong>\n');
+fprintf('\n<strong>NOISY SPEECH ERRORS:</strong>\n');
 methods = {'W', 'LMS', 'NLMS', 'RLS', 'FxLMS', 'FxNLMS', 'FxRLS'};
 mse = [mean(eW); mean(eLMS); mean(eNLMS); mean(eRLS); mean(eFxLMS); mean(eFxNLMS); mean(eFxRLS)];
 Te = table(methods', mse, 'VariableNames', {'Method', 'Error'});
 disp(Te);
+
+% write table
+writetable(Te, [res_path, 'NoisySpeechErrors.csv']);
 
 % play audio
 if strcmpi(play,'none')
@@ -112,7 +115,7 @@ eFxLMS = movmean(eFxLMS, maL);
 eFxNLMS = movmean(eFxNLMS, maL);
 eFxRLS = movmean(eFxRLS, maL);
 
-% plot results
+% plot
 figure(4)
 plot(1:T,10*log10(eW),'k',1:T,10*log10(eLMS),'b',1:T,10*log10(eNLMS),'r',1:T,10*log10(eRLS),'g',...
     1:T,10*log10(eFxLMS),'c',1:T,10*log10(eFxNLMS),'m',1:T,10*log10(eFxRLS),'y')
@@ -137,9 +140,7 @@ for i = 1:length(signals)
     title(titles(i)); xlabel('Time (s)'); ylabel('Frequency (Hz)');
 end
 
-% save figures to plot_path
-if plot_save == true
-    saveas(figure(4), [plot_path 'NoisySpeechPerformance.png']);
-    saveas(figure(5), [plot_path 'NoisySpeechConvergence.png']);
-    saveas(figure(6), [plot_path 'NoisySpeechComparisons.png']);
-end
+% save figures
+saveas(figure(4), [plot_path 'NoisySpeechPerformance.png']);
+saveas(figure(5), [plot_path 'NoisySpeechConvergence.png']);
+saveas(figure(6), [plot_path 'NoisySpeechComparisons.png']);

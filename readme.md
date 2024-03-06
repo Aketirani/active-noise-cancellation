@@ -18,6 +18,9 @@ This project focuses on exploring the potential applications of the ANC methodol
 ├── plots                       <-- Plots Folder
 |   ├── *.png                   <-- Plots Files
 |
+├── results                     <-- Results Folder
+|   ├── *.csv                   <-- Results Files
+|
 ├── src                         <-- Source Folder
 |   ├── *.m                     <-- Source Files
 |
@@ -51,11 +54,8 @@ In this context, the input signal, denoted as `x(n)`, is generated from the `noi
 ### Exectuion
 Execute `anc.m` to initiate the entire pipeline.
 
-Following arguments can be specified in the config file:
-- `rec_mode`: Run the record audio step
-- `sim_mode`: Run the simulate adaptive filters step
-- `optpara_mode`: Run the optimize parameters step
-- `ns_mode`: Run the noise reduction on noisy speech step
+### Configuration
+Parameters can be specified in the `config.txt` file.
 
 ### Conclusion
 Obtaining the most feasible result of the adaptive algorithms is contingent upon identifying the optimal parameter values, which can prove challenging, considering the multitude of variables that must be considered. The selection of the appropriate algorithm hinges on the desired outcome. While filtered adaptive algorithms demonstrate improved error floor performance, their convergence speed is slower when compared to non-filtered adaptive algorithms.

@@ -10,10 +10,11 @@
 
 % initializate settings
 clear, clc, clf
+addpath(genpath('src'));
 rng('default')
 
 % read parameters
-pc = loadconfig('config/config.txt');
+pc = loadconfig('config.txt');
 
 % load data
 s = load(pc.speech_path);  % speech x(n)
@@ -27,15 +28,15 @@ end
 
 % run simulate adaptive filters
 if pc.sim_mode == true
-    Te = simulation(pc.T, pc.N, pc.L, Pw.bpir, pc.plot_save, pc.plot_path);
+    Te = simulation(pc.T, pc.N, pc.L, Pw.bpir, pc.res_path, pc.plot_path);
 end
 
 % run optimize parameters
 if pc.optpara_mode == true
-    [opt_L, opt_mu] = optpara(pc.T, pc.N, pc.L_vec, pc.mu_vec, Pw.bpir, pc.alg, pc.plot_save, pc.plot_path);
+    [opt_L, opt_mu] = optpara(pc.T, pc.N, pc.L_vec, pc.mu_vec, Pw.bpir, pc.alg, pc.res_path, pc.plot_path);
 end
 
 % run noise reduction on noisy speech
 if pc.ns_mode == true
-    Te = noisyspeech(s.speech, x.noise, pc.L, Pw.bpir, pc.play, pc.plot_save, pc.plot_path);
+    Te = noisyspeech(s.speech, x.noise, pc.L, Pw.bpir, pc.play, pc.res_path, pc.plot_path);
 end
