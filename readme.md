@@ -6,6 +6,9 @@ This project focuses on exploring the potential applications of the ANC methodol
 
 ### Structure
 ```
+├── config                      <-- Config Folder
+|   ├── *.txt                   <-- Config Files
+|
 ├── data                        <-- Data Folder
 |   ├── *.mat                   <-- Data Files
 |
@@ -48,7 +51,7 @@ In this context, the input signal, denoted as `x(n)`, is generated from the `noi
 ### Exectuion
 Execute `anc.m` to initiate the entire pipeline.
 
-Following arguments can be specified:
+Following arguments can be specified in the config file:
 - `rec_mode`: Run the record audio step
 - `sim_mode`: Run the simulate adaptive filters step
 - `optpara_mode`: Run the optimize parameters step
