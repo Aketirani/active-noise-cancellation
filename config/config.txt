@@ -1,4 +1,5 @@
 % Configuration File
+%
 %   The configuration file should be formatted as follows:
 %       Each parameter should be specified on a separate line in the format:
 %           paramName: paramValue
