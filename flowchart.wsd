@@ -3,8 +3,9 @@
 package "anc.m" {
     :start|
     :initializate settings;
-    :read parameters;
+    :read config;
     :load data;
+    :initialize parameters;
     :record audio;
     :simulate adaptive filters;
     :optimize parameters;

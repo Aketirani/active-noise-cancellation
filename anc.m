@@ -13,7 +13,7 @@ clear, clc, clf
 addpath(genpath('src'));
 rng('default')
 
-% read parameters
+% read config
 c = loadconfig('config/config.txt');
 
 % load data
