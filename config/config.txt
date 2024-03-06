@@ -5,28 +5,29 @@
 %       Blank lines and lines starting with '%' are ignored
 
 % set modes
-rec_mode: false                         % recorder mode off
-sim_mode: true                          % simulation mode on
-optpara_mode: true                      % optimize parameters mode on
-ns_mode: true                           % noisy speech mode on
+rec_mode: false
+sim_mode: true
+optpara_mode: true
+ns_mode: true
 
-% set paths
-res_path: 'results/'                    % path for saving the results
-plot_path: 'plots/'                     % path for saving the plots
+% set results path and names
+res_path: 'results/'
+    res1: 'SimulationErrors.csv'
+    res2: 'OptimalParameters.csv'
+    res3: 'NoisySpeechErrors.csv'
 
-% load data
-speech_path: 'data/speech.mat'          % path to speech data
-noise_path: 'data/noise.mat'            % path to noise data
-filter_path: 'data/bpir.mat'            % path to filter data
+% set plot path and names
+plot_path: 'plots/'
+    fig1: 'SimulationPerformance.png'
+    fig2: 'SimulationConvergence.png'
+    fig3: 'OptimalParameters.png'
+    fig4: 'NoisySpeechPerformance.png'
+    fig5: 'NoisySpeechConvergence.png'
+    fig6: 'NoisySpeechComparisons.png'
 
-% initialize parameters
-d: 4                                    % duration of the recording
-r: 'data/rec.mat'                       % name of the recording
-p: 0                                    % play the recording
-T: 2000                                 % iterations
-N: 200                                  % experiments
-L: 10                                   % filter length
-L_vec: [10, 12, 14, 16]                 % filter length vector
-mu_vec: [0.01, 0.03, 0.05, 0.07, 0.09]  % step size vector
-alg: 'LMS'                              % algorithm
-play: 'none'                            % audio to play
+% set data path and names
+data_path: 'data/'
+    data1: 'speech.mat'
+    data2: 'noise.mat'
+    data3: 'bpir.mat'
+    data4: 'rec.mat'
