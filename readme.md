@@ -58,7 +58,7 @@ In this context, the input signal, denoted as `x(n)`, is generated from the `noi
 Execute `anc.m` to initiate the entire pipeline.
 
 ### Configuration
-Parameters can be specified in the `config.txt` file.
+Parameters and paths can be specified in the `config.txt` file.
 
 ### Conclusion
 Obtaining the most feasible result of the adaptive algorithms is contingent upon identifying the optimal parameter values, which can prove challenging, considering the multitude of variables that must be considered. The selection of the appropriate algorithm hinges on the desired outcome. While filtered adaptive algorithms demonstrate improved error floor performance, their convergence speed is slower when compared to non-filtered adaptive algorithms.
