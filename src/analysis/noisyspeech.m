@@ -1,4 +1,4 @@
-function Te = noisyspeech(s, x, L, Pw, play, res_path, plot_path)
+function Te = noisyspeech(s, x, L, Pw, c, play)
 % Noise reduction on noisy speech using different adaptive filters
 %
 % Inputs:
@@ -6,6 +6,7 @@ function Te = noisyspeech(s, x, L, Pw, play, res_path, plot_path)
 %   x    : [1xN] vector of the noisy signal
 %	L    : [1x1] filter length (positive integer)
 %   Pw   : [Lx1] impulse response of the system
+%   c    : struct containing configuration parameters
 %   play : string indicating which audio to play, options are:
 %         - none   : play nothing
 %         - s      : play clean speech signal
@@ -18,22 +19,19 @@ function Te = noisyspeech(s, x, L, Pw, play, res_path, plot_path)
 %         - fxlms  : play noisy speech signal filtered using FxLMS algorithm
 %         - fxnlms : play noisy speech signal filtered using FxNLMS algorithm
 %         - fxrls  : play noisy speech signal filtered using FxRLS algorithm
-%   res_path  : path to save the result (string)
-%   plot_path : path to save the figure (string)
 %
 % Output:
-%	Te   : [7x2] table containing the error for each adaptive filter algorithm
+%	Te   : [6x2] table containing the error for each adaptive filter algorithm
 
 % validate inputs
-assert(nargin == 7, 'Invalid number of input arguments. The function requires 7 input arguments.')
+assert(nargin == 6, 'Invalid number of input arguments. The function requires 6 input arguments.')
 assert(isvector(s), 's must be a vector.')
 assert(isvector(x), 'x must be a vector.')
+assert(length(s) == length(x), 's and x must have the same length.')
 assert(isnumeric(L) && isscalar(L) && L > 0, 'L must be a positive scalar.')
 assert(isvector(Pw), 'Pw must be a vector.')
+assert(isstruct(c), 'config must be a struct.')
 assert(ischar(play), 'play must be a string.')
-assert(ischar(res_path), 'result path must be a string.')
-assert(ischar(plot_path), 'plot path must be a string.')
-assert(length(s) == length(x), 's and x must have the same length.')
 assert(any(strcmpi(play, {'none', 's', 'fx', 'd', 'dfx', 'lms', 'nlms', 'rls', 'fxlms', 'fxnlms', 'fxrls'})), ...
     'play is invalid. It must be one of the following: ''none'', ''s'', ''fx'', ''d'', ''dfx'', ''lms'', ''nlms'', ''rls'', ''fxlms'', ''fxnlms'', or ''fxrls''.')
 
@@ -76,7 +74,7 @@ Te = table(methods', mse, 'VariableNames', {'Method', 'Error'});
 disp(Te);
 
 % write table
-writetable(Te, [res_path, 'NoisySpeechErrors.csv']);
+writetable(Te, fullfile(c.res_path, c.res3));
 
 % play audio
 if strcmpi(play,'none')
@@ -116,18 +114,18 @@ eFxNLMS = movmean(eFxNLMS, maL);
 eFxRLS = movmean(eFxRLS, maL);
 
 % plot
-figure(4)
+fig4 = figure(4);
 plot(1:T,10*log10(eW),'k',1:T,10*log10(eLMS),'b',1:T,10*log10(eNLMS),'r',1:T,10*log10(eRLS),'g',...
     1:T,10*log10(eFxLMS),'c',1:T,10*log10(eFxNLMS),'m',1:T,10*log10(eFxRLS),'y')
 legend('W','LMS','NLMS','RLS','FxLMS','FxNLMS','FxRLS')
 legend('W','LMS','NLMS','RLS','FxLMS','FxNLMS','FxRLS')
 title('Performance'); xlabel('Time (s)'); ylabel('MSE (dB)')
-figure(5)
+fig5 = figure(5);
 plot(tv,fx-yW,'k', tv,fx-yLMS,'b',tv,fx-yNLMS,'r',tv,fx-yRLS,'g',...
     tv,fx-yFxLMS,'c',tv,fx-yFxNLMS,'m',tv,fx-yFxRLS,'y')
 legend('W','LMS','NLMS','RLS','FxLMS','FxNLMS','FxRLS')
 title('Convergence'); xlabel('Time (s)'); ylabel('Error')
-figure(6)
+fig6 = figure(6);
 signals = {s, fx, d, d-yFxRLS};
 titles = [{'Speech'},{'Noise'},{'Noisy Speech'},{'Filtered Output'}];
 hw = 256; % hamming window size
@@ -141,6 +139,6 @@ for i = 1:length(signals)
 end
 
 % save figures
-saveas(figure(4), [plot_path 'NoisySpeechPerformance.png']);
-saveas(figure(5), [plot_path 'NoisySpeechConvergence.png']);
-saveas(figure(6), [plot_path 'NoisySpeechComparisons.png']);
+saveas(fig4, fullfile(c.plot_path, c.fig4));
+saveas(fig5, fullfile(c.plot_path, c.fig5));
+saveas(fig6, fullfile(c.plot_path, c.fig6));

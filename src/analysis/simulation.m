@@ -1,31 +1,29 @@
-function Te = simulation(T, Nexp, L, Pw, res_path, plot_path)
+function Te = simulation(T, N, L, Pw, c)
 % Simulates adaptive filters and evaluate their performance
 %
 % Inputs:
-%	T    : the number of iterations (positive integer)
-%	Nexp : the number of experiments (positive integer)
-%   Pw   : [Lx1] impulse response of the system
-%	L    : [1x1] filter length (positive integer)
-%   res_path  : path to save the result (string)
-%   plot_path : path to save the figure (string)
+%	T  : [1x1] number of iterations (positive integer)
+%	N  : [1x1] number of experiments (positive integer)
+%   Pw : [Lx1] impulse response of the system
+%	L  : [1x1] filter length (positive integer)
+%   c  : struct containing configuration parameters
 %
 % Output:
-%	Te   : [7x2] table containing the error for each adaptive filter algorithm
+%	Te : [5x2] table containing the error for each adaptive filter algorithm
 
 % check inputs
-assert(nargin == 6, 'Invalid number of input arguments. The function requires 6 input arguments.')
+assert(nargin == 5, 'Invalid number of input arguments. The function requires 5 input arguments.')
 assert(isnumeric(T) && isscalar(T) && T > 0, 'T must be a positive scalar.')
-assert(isnumeric(Nexp) && isscalar(Nexp) && Nexp > 0, 'Nexp must be a positive scalar.')
+assert(isnumeric(N) && isscalar(N) && N > 0, 'N must be a positive scalar.')
 assert(isnumeric(L) && isscalar(L) && L > 0, 'L must be a positive scalar.')
 assert(isvector(Pw), 'Pw must be a vector.')
-assert(ischar(res_path), 'result path must be a string.')
-assert(ischar(plot_path), 'plot path must be a string.')
+assert(isstruct(c), 'config must be a struct.')
 
 % initialize variables
 e = struct();
 fields = {'W', 'LMS', 'NLMS', 'RLS', 'FxLMS', 'FxNLMS', 'FxRLS'};
 for i = 1:length(fields)
-    e.(fields{i}) = zeros(T, Nexp);
+    e.(fields{i}) = zeros(T, N);
 end
 
 % define algorithm parameters
@@ -38,9 +36,9 @@ mu_FxLMS = 0.1; % fxlms step size
 mu_FxNLMS = 1;  % fxnlms step size
 
 % compute mean square error for all experiments
-for i = 1:Nexp
+for i = 1:N
     % initializate parameters
-    xn = randn(T,1);      % white noise
+    xn = randn(T,1);      % white noise x(n)
     d = filter(Pw,1,xn);  % filtered white noise d(n)
 
     % LMS on white noise used for filtered algorithms
@@ -59,17 +57,17 @@ for i = 1:Nexp
     [yFxNLMS, eFxNLMS(:,i)] = fxnlms(xn, d, L, mu_FxNLMS, Sw, Shw, Shx, delta);
     [yFxRLS, eFxRLS(:,i)] = fxrls(xn, d, L, beta, lambda, Sw, Shw, Shx);
 
-    mprogress(i/Nexp);   % elapsed and remaining time
+    mprogress(i/N);   % elapsed and remaining time
 end
 
 % compute average mean square error for all experiments
-mse_w = sum(eW,2)/Nexp;
-mse_lms = sum(eLMS,2)/Nexp;
-mse_nlms = sum(eNLMS,2)/Nexp;
-mse_rls = sum(eRLS,2)/Nexp;
-mse_fxlms = sum(eFxLMS,2)/Nexp;
-mse_fxnlms = sum(eFxNLMS,2)/Nexp;
-mse_fxrls = sum(eFxRLS,2)/Nexp;
+mse_w = sum(eW,2)/N;
+mse_lms = sum(eLMS,2)/N;
+mse_nlms = sum(eNLMS,2)/N;
+mse_rls = sum(eRLS,2)/N;
+mse_fxlms = sum(eFxLMS,2)/N;
+mse_fxnlms = sum(eFxNLMS,2)/N;
+mse_fxrls = sum(eFxRLS,2)/N;
 
 % create table
 fprintf('\n<strong>SIMULATION ERRORS:</strong>\n');
@@ -79,20 +77,20 @@ Te = table(methods', mse, 'VariableNames', {'Method', 'Error'});
 disp(Te);
 
 % write table
-writetable(Te, [res_path, 'SimulationErrors.csv']);
+writetable(Te, fullfile(c.res_path, c.res1));
 
 % plot
-figure(1)
+fig1 = figure(1);
 plot(1:T,10*log10(mse_w),'k',1:T,10*log10(mse_lms),'b',1:T,10*log10(mse_nlms),'r',1:T,10*log10(mse_rls),'g',...
     1:T,10*log10(mse_fxlms),'c',1:T,10*log10(mse_fxnlms),'m',1:T,10*log10(mse_fxrls),'y')
 legend('W','LMS','NLMS','RLS','FxLMS','FxNLMS','FxRLS')
 title('Performance'); xlabel('Iterations'); ylabel('MSE (dB)')
-figure(2)
+fig2 = figure(2);
 plot(1:T,d-yW,'k',1:T,d-yLMS,'b',1:T,d-yNLMS,'r',1:T,d-yRLS,'g',...
     1:T,d-yFxLMS,'c',1:T,d-yFxNLMS,'m',1:T,d-yFxRLS,'y')
 legend('W','LMS','NLMS','RLS','FxLMS','FxNLMS','FxRLS')
 title('Convergence'); xlabel('Iterations'); ylabel('Error')
 
 % save figures
-saveas(figure(1), [plot_path 'SimulationPerformance.png']);
-saveas(figure(2), [plot_path 'SimulationConvergence.png']);
+saveas(fig1, fullfile(c.plot_path, c.fig1));
+saveas(fig2, fullfile(c.plot_path, c.fig2));

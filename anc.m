@@ -14,29 +14,40 @@ addpath(genpath('src'));
 rng('default')
 
 % read parameters
-pc = loadconfig('config.txt');
+c = loadconfig('config/config.txt');
 
 % load data
-s = load(pc.speech_path);  % speech x(n)
-x = load(pc.noise_path);   % noise
-Pw = load(pc.filter_path); % filter P(z)
+s = load(fullfile(c.data_path, c.data1));  % speech x(n)
+x = load(fullfile(c.data_path, c.data2));  % noise
+Pw = load(fullfile(c.data_path, c.data3)); % filter P(z)
+
+% initialize parameters
+d = 4;                                     % duration of the recording
+p = 0;                                     % play the recording
+T = 2000;                                  % iterations
+N = 200;                                   % experiments
+L = 10;                                    % filter length
+L_vec = [10, 12, 14, 16];                  % filter length vector
+mu_vec = [0.01, 0.03, 0.05, 0.07, 0.09];   % step size vector
+alg = 'LMS';                               % algorithm
+play = 'none';                             % audio to play
 
 % run record audio
-if pc.rec_mode == true
-    s = recorder(pc.d, pc.r, pc.p);
+if c.rec_mode == true
+    s = recorder(d, c, p);
 end
 
 % run simulate adaptive filters
-if pc.sim_mode == true
-    Te = simulation(pc.T, pc.N, pc.L, Pw.bpir, pc.res_path, pc.plot_path);
+if c.sim_mode == true
+    Te = simulation(T, N, L, Pw.bpir, c);
 end
 
 % run optimize parameters
-if pc.optpara_mode == true
-    [opt_L, opt_mu] = optpara(pc.T, pc.N, pc.L_vec, pc.mu_vec, Pw.bpir, pc.alg, pc.res_path, pc.plot_path);
+if c.optpara_mode == true
+    [opt_L, opt_mu] = optpara(T, N, L_vec, mu_vec, Pw.bpir, alg, c);
 end
 
 % run noise reduction on noisy speech
-if pc.ns_mode == true
-    Te = noisyspeech(s.speech, x.noise, pc.L, Pw.bpir, pc.play, pc.res_path, pc.plot_path);
+if c.ns_mode == true
+    Te = noisyspeech(s.speech, x.noise, L, Pw.bpir, c, play);
 end
