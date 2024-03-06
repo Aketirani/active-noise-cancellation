@@ -87,7 +87,7 @@ Te = table({alg}, opt_L, opt_mu, 'VariableNames', {'Algorithm', 'Filter Length',
 disp(Te);
 
 % write table
-writetable(Te, [res_path, 'OptimalParametersResult.csv']);
+writetable(Te, [plot_path strcat('OptimalParameters', alg,'.csv')]);
 
 % plot
 figure(3)

@@ -4,8 +4,6 @@
 *.pyc
 *.npz
 *.npy
-*.xlsx
-*.csv
 *.hdf5
 .idea/
 __pycache__/
