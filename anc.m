@@ -9,56 +9,33 @@
 %   Ensure the required data files are available before running the script.
 
 % initializate settings
-clear, clc, clf          % clear
-addpath(genpath('src')); % add src path
-rng('default')           % generate the same random numbers
+clear, clc, clf
+rng('default')
 
-% set modes
-rec_mode = false;        % recorder mode
-sim_mode = true;         % simulation mode
-optpara_mode = true;     % optimize parameters mode
-ns_mode = true;          % noisy speech mode
-
-% set plots
-plot_save = true;        % save the plots
-plot_path = 'plots/';    % path of the plots
+% read parameters
+pc = loadconfig('config/config.txt');
 
 % load data
-load('data/speech')      % load speech
-load('data/noise')       % load noise
-load('data/bpir')        % load filter
-s = speech;              % speech x(n)
-x = noise;               % noise
-Pw = bpir;               % filter P(z)
-
-% initializate parameters
-d = 4;                   % duration of the recording
-r = 'data/rec.mat';      % name of the recording
-p = 0;                   % play the recording
-T = 2000;                % iterations
-Nexp = 200;              % experiments
-L = 10;                  % filter length
-L_vec = 8:2:14;          % filter length vector
-mu_vec = 0.01:0.02:0.1;  % step size vector
-alg = 'LMS';             % algorithm
-play = 'none';           % audio to play
+s = load(pc.speech_path);  % speech x(n)
+x = load(pc.noise_path);   % noise
+Pw = load(pc.filter_path); % filter P(z)
 
 % run record audio
-if rec_mode == true
-    s = recorder(d, r, p);
+if pc.rec_mode == true
+    s = recorder(pc.d, pc.r, pc.p);
 end
 
 % run simulate adaptive filters
-if sim_mode == true
-    Te = simulation(T, Nexp, L, Pw, plot_save, plot_path);
+if pc.sim_mode == true
+    Te = simulation(pc.T, pc.N, pc.L, Pw.bpir, pc.plot_save, pc.plot_path);
 end
 
 % run optimize parameters
-if optpara_mode == true
-    [opt_L, opt_mu] = optpara(T, Nexp, L_vec, mu_vec, Pw, alg, plot_save, plot_path);
+if pc.optpara_mode == true
+    [opt_L, opt_mu] = optpara(pc.T, pc.N, pc.L_vec, pc.mu_vec, Pw.bpir, pc.alg, pc.plot_save, pc.plot_path);
 end
 
 % run noise reduction on noisy speech
-if ns_mode == true
-    Te = noisyspeech(s, x, L, Pw, play, plot_save, plot_path);
+if pc.ns_mode == true
+    Te = noisyspeech(s.speech, x.noise, pc.L, Pw.bpir, pc.play, pc.plot_save, pc.plot_path);
 end

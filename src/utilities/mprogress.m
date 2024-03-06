@@ -23,7 +23,7 @@ persistent m t0 c p tp cwv
 update = false;
 
 % minimum change in counter before it is displayed
-N0 = .01;
+N0 = 0.01;
 
 % minimum time (seconds) between counter is displayed
 T0 = 1;
