@@ -15,6 +15,9 @@ This project focuses on exploring the potential applications of the ANC methodol
 ├── images                      <-- Images Folder
 |   ├── *.png                   <-- Images Files
 |
+├── logs                        <-- Logs Folder
+|   ├── *.txt                   <-- Log Files
+|
 ├── plots                       <-- Plots Folder
 |   ├── *.png                   <-- Plots Files
 |

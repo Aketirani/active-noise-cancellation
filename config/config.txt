@@ -11,6 +11,12 @@ sim_mode: true
 optpara_mode: true
 ns_mode: true
 
+% set logs path and names
+log_path: 'logs/'
+    log1: 'log_'
+    log2: 'ddmmyyyy'
+    log3: '.txt'
+
 % set results path and names
 res_path: 'results/'
     res1: 'SimulationErrors.csv'
