@@ -1,4 +1,4 @@
-function Te = simulation(T, Nexp, L, Pw, plot_save, plot_path)
+function Te = simulation(T, Nexp, L, Pw, res_path, plot_path)
 % Simulates adaptive filters and evaluate their performance
 %
 % Inputs:
@@ -6,10 +6,10 @@ function Te = simulation(T, Nexp, L, Pw, plot_save, plot_path)
 %	Nexp : the number of experiments (positive integer)
 %   Pw   : [Lx1] impulse response of the system
 %	L    : [1x1] filter length (positive integer)
-%   plot_save : save the figure into a png if set to true (logical)
+%   res_path  : path to save the result (string)
 %   plot_path : path to save the figure (string)
 %
-% Outputs:
+% Output:
 %	Te   : [7x2] table containing the error for each adaptive filter algorithm
 
 % check inputs
@@ -18,8 +18,8 @@ assert(isnumeric(T) && isscalar(T) && T > 0, 'T must be a positive scalar.')
 assert(isnumeric(Nexp) && isscalar(Nexp) && Nexp > 0, 'Nexp must be a positive scalar.')
 assert(isnumeric(L) && isscalar(L) && L > 0, 'L must be a positive scalar.')
 assert(isvector(Pw), 'Pw must be a vector.')
-assert(islogical(plot_save), 'plot_save must be a boolean value.');
-assert(ischar(plot_path), 'play must be a string.')
+assert(ischar(res_path), 'result path must be a string.')
+assert(ischar(plot_path), 'plot path must be a string.')
 
 % initialize variables
 e = struct();
@@ -78,7 +78,10 @@ mse = [mse_w(end); mse_lms(end); mse_nlms(end); mse_rls(end); mse_fxlms(end); ms
 Te = table(methods', mse, 'VariableNames', {'Method', 'Error'});
 disp(Te);
 
-% plot results
+% write table
+writetable(Te, [res_path, 'SimulationsResults.csv']);
+
+% plot
 figure(1)
 plot(1:T,10*log10(mse_w),'k',1:T,10*log10(mse_lms),'b',1:T,10*log10(mse_nlms),'r',1:T,10*log10(mse_rls),'g',...
     1:T,10*log10(mse_fxlms),'c',1:T,10*log10(mse_fxnlms),'m',1:T,10*log10(mse_fxrls),'y')
@@ -90,8 +93,6 @@ plot(1:T,d-yW,'k',1:T,d-yLMS,'b',1:T,d-yNLMS,'r',1:T,d-yRLS,'g',...
 legend('W','LMS','NLMS','RLS','FxLMS','FxNLMS','FxRLS')
 title('Convergence'); xlabel('Iterations'); ylabel('Error')
 
-% save figures to plot_path
-if plot_save == true
-    saveas(figure(1), [plot_path 'SimulationPerformance.png']);
-    saveas(figure(2), [plot_path 'SimulationConvergence.png']);
-end
+% save figures
+saveas(figure(1), [plot_path 'SimulationPerformance.png']);
+saveas(figure(2), [plot_path 'SimulationConvergence.png']);

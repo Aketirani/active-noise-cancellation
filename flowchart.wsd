@@ -3,10 +3,8 @@
 package "anc.m" {
     :start|
     :initializate settings;
-    :set modes;
-    :set plots;
+    :read parameters;
     :load data;
-    :initialize parameters;
     :record audio;
     :simulate adaptive filters;
     :optimize parameters;
