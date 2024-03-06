@@ -10,13 +10,13 @@ sim_mode: true
 optpara_mode: true
 ns_mode: true
 
-% set results paths and names
+% set results path and names
 res_path: 'results/'
     res1: 'SimulationErrors.csv'
     res2: 'OptimalParameters.csv'
     res3: 'NoisySpeechErrors.csv'
 
-% set plot paths and names
+% set plot path and names
 plot_path: 'plots/'
     fig1: 'SimulationPerformance.png'
     fig2: 'SimulationConvergence.png'
@@ -25,7 +25,7 @@ plot_path: 'plots/'
     fig5: 'NoisySpeechConvergence.png'
     fig6: 'NoisySpeechComparisons.png'
 
-% set data paths and names
+% set data path and names
 data_path: 'data/'
     data1: 'speech.mat'
     data2: 'noise.mat'
