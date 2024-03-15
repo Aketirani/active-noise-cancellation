@@ -51,9 +51,9 @@ classdef gui < matlab.apps.AppBase
 
             % create text area for displaying information
             app.InfoTextArea = uitextarea(app.UIFigure);
-            app.InfoTextArea.Position = [5 220 440 40];
-            app.InfoTextArea.Value = {'This application implements various ANC algorithms for active noise cancellation', ...
-                'It evaluates their performance through simulations and noisy speech processing'};
+            app.InfoTextArea.Position = [10 220 430 40];
+            app.InfoTextArea.Value = {'This application implements various algorithms for active noise cancellation by', ...
+                'evaluating their performance through simulations and noisy speech processing'};
             app.InfoTextArea.Editable = false;
 
             % create checkboxes for modes
