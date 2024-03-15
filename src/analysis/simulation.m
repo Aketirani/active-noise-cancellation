@@ -6,7 +6,7 @@ function Te = simulation(T, N, L, Pw, c)
 %	N  : [1x1] number of experiments (positive integer)
 %   Pw : [Lx1] impulse response of the system
 %	L  : [1x1] filter length (positive integer)
-%   c  : struct containing configuration parameters
+%   c  : [struct] containing configuration parameters
 %
 % Output:
 %	Te : [5x2] table containing the error for each adaptive filter algorithm

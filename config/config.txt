@@ -5,12 +5,6 @@
 %           paramName: paramValue
 %       Blank lines and lines starting with '%' are ignored
 
-% set modes
-rec_mode: false
-sim_mode: true
-optpara_mode: true
-ns_mode: true
-
 % set logs path and names
 log_path: 'logs/'
     log1: 'log_'

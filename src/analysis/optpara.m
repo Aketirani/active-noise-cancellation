@@ -8,7 +8,7 @@ function [opt_L, opt_mu] = optpara(T, Nexp, L_vec, mu_vec, Pw, alg, c)
 %	mu_vec : [1xN] step size vector (positive scalars)
 %   Pw     : [Lx1] impulse response of the system
 %   alg    : [char] algorithm type
-%   c      : struct containing configuration parameters
+%   c      : [struct] containing configuration parameters
 %
 % Outputs:
 %	opt_L  : [1x1] optimal filter length for the lowest mean squared error (positive integer)

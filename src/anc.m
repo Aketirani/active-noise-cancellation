@@ -1,17 +1,11 @@
-% Active Noise Cancellation Using Filtered Adaptive Algorithms
+function anc(rec_mode, sim_mode, optpara_mode, ns_mode)
+% Active noise cancellation using filtered adaptive algorithms
 %
-% This script implements various ANC algorithms for active noise cancellation.
-% It evaluates their performance through simulations and noisy speech processing.
-%
-% Usage:
-%   Execute the script to run simulations and evaluate the ANC algorithms.
-%   Adjust the parameters and modes according to specific requirements.
-%   Ensure the required data files are available before running the script.
-
-% initializate settings
-clear, clc, clf
-addpath(genpath('src'));
-rng('default')
+% Inputs:
+%   - rec_mode     : [boolean] indicating whether to record audio
+%   - sim_mode     : [boolean] indicating whether to simulate filters
+%   - optpara_mode : [boolean] indicating whether to optimize parameters
+%   - ns_mode      : [boolean] indicating whether to perform noise reduction on noisy speech
 
 % read config
 c = loadconfig('config/config.txt');
@@ -40,25 +34,25 @@ alg = 'LMS';                               % algorithm
 play = 'none';                             % audio to play
 
 % run record audio
-if c.rec_mode == true
+if rec_mode == true
     fprintf(log_file, 'Running Record Audio...\n');
     s = recorder(d, c, p);
 end
 
 % run simulate adaptive filters
-if c.sim_mode == true
+if sim_mode == true
     fprintf(log_file, 'Running Simulate Adaptive Filters...\n');
     Te = simulation(T, N, L, Pw.bpir, c);
 end
 
 % run optimize parameters
-if c.optpara_mode == true
+if optpara_mode == true
     fprintf(log_file, 'Running Optimize Parameters...\n');
     [opt_L, opt_mu] = optpara(T, N, L_vec, mu_vec, Pw.bpir, alg, c);
 end
 
 % run noise reduction on noisy speech
-if c.ns_mode == true
+if ns_mode == true
     fprintf(log_file, 'Running Noise Reduction On Noisy Speech...\n');
     Te = noisyspeech(s.speech, x.noise, L, Pw.bpir, c, play);
 end
