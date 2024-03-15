@@ -1,7 +1,7 @@
 classdef gui < matlab.apps.AppBase
 % Graphical User Interface
 %
-%  Properties:
+% Properties:
 %   - UIFigure               : main figure window
 %   - InfoTextArea           : area for displaying information
 %   - RecordModeCheckBox     : checkbox for enabling record mode
