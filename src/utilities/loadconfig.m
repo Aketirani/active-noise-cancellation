@@ -2,10 +2,10 @@ function p = loadconfig(file)
 % Load configuration parameters from a text file.
 %
 % Input:
-%	file : Path to the configuration text file (string)
+%	file : [string] path to the configuration text file
 %
 % Output:
-%   p    : Structure containing the loaded configuration parameters
+%   p    : [struct] containing the loaded configuration parameters
 %
 
 % validate input

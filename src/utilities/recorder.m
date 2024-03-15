@@ -3,11 +3,11 @@ function s = recorder(d, c, p)
 %
 % Inputs:
 %   d : [1x1] duration of recording in seconds
-%   c : struct containing configuration parameters
-%   p : [0 or 1] whether to play the recorded audio
+%   c : [struct] containing configuration parameters
+%   p : [0,1] whether to play the recorded audio
 %
-% Outputs:
-%   s : recorded audio data
+% Output:
+%   s : [Nx1] recorded audio data
 
 % validate inputs
 assert(isnumeric(d) && isscalar(d) && d > 0, 'duration must be a positive scalar.');

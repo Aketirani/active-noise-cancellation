@@ -29,11 +29,11 @@ This project focuses on exploring the potential applications of the ANC methodol
 |
 ├── .gitignore                  <-- Configuring Ignored Files
 |
-├── anc.m                       <-- Main Matlab Script
-|
 ├── flowchart.wsd               <-- Pipeline Flowchart
 |
 ├── readme.md                   <-- You Are Here
+|
+├── run.m                       <-- Main Matlab Script
 ```
 
 ### Adaptive Algorithms
@@ -55,7 +55,7 @@ Clone the repository to your local machine and navigate to the project's root di
 In this context, the input signal, denoted as `x(n)`, is generated from the `noise.mat` file, while the speech signal, represented by `speech.mat`, is added to the desired signal, `d(n)`. It is crucial for the noise signal to be uncorrelated with the speech signal, as otherwise, the algorithms may inadvertently remove portions of the speech signal. To prevent this, the signals must be distinguishable. Additionally, the impulse response filter of the primary path, `P(z)`, is derived from the `bpir.mat` file. The recorded audio data is stored in the `rec.mat` file, which users themselves can update.
 
 ### Exectuion
-Execute `anc.m` to initiate the entire pipeline.
+Execute `run.m` to initiate the entire pipeline.
 
 ### Configuration
 Parameters and paths can be specified in the `config.txt` file.

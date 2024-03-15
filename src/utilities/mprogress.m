@@ -1,20 +1,11 @@
 function update = mprogress(n)
 % Displays elapsed and remaining time of a for-loop
 %
-% Usage:
-%	mprogress (with no arguments) resets and displays the counter.
-%   mprogress(t) for t in [0,1] updates at t*100% if 1 sec passed & increased >= 1% since last update.
+% Input:
+%	n      : [0:1] current value of counter
 %
-% Variables:
-%	n  : Current value of counter (between 0 and 1)
-%	m  : Value of counter at last display
-%	t0 : Time when counter was started
-%	c  : Counter string to display
-%	p  : Step (seconds)
-%	tp : Time when counter was last displayed
-%
-% Returns:
-%	update : Boolean, whether or not the counter was updated
+% Output:
+%	update : [boolean] whether or not the counter was updated
 
 % define persistent variables
 persistent m t0 c p tp cwv
