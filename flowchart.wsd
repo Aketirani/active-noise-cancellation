@@ -1,20 +1,22 @@
 @startuml Pipeline Flowchart
 |ANC|
-package "run.m" {
+package "anc" {
     :start|
-    :initializate settings;
-    :run gui;
-    package "gui.m" {
-        :set modes;
-        :run anc;
-        package "anc.m" {
-            :read config;
-            :load data;
-            :initialize parameters;
-            :record audio;
-            :simulate adaptive filters;
-            :optimize parameters;
-            :noise reduction on noisy speech;
+    package "run.m" {
+        :initializate settings;
+        :run gui;
+        package "gui.m" {
+            :set modes;
+            :run anc;
+            package "anc.m" {
+                :read config;
+                :load data;
+                :initialize parameters;
+                :record audio;
+                :simulate adaptive filters;
+                :optimize parameters;
+                :noise reduction on noisy speech;
+            }
         }
     }
     :end|
