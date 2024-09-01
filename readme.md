@@ -7,25 +7,25 @@ This project focuses on exploring the potential applications of the ANC methodol
 ### Structure
 ```
 ├── config                      <-- Config Folder
-|   ├── *.txt                   <-- Config Files
+|   └── *.txt                   <-- Config Files
 |
 ├── data                        <-- Data Folder
-|   ├── *.mat                   <-- Data Files
+|   └── *.mat                   <-- Data Files
 |
 ├── images                      <-- Images Folder
-|   ├── *.png                   <-- Images Files
+|   └── *.png                   <-- Images Files
 |
 ├── logs                        <-- Logs Folder
-|   ├── *.txt                   <-- Log Files
+|   └── *.txt                   <-- Log Files
 |
 ├── plots                       <-- Plots Folder
-|   ├── *.png                   <-- Plots Files
+|   └── *.png                   <-- Plots Files
 |
 ├── results                     <-- Results Folder
-|   ├── *.csv                   <-- Results Files
+|   └── *.csv                   <-- Results Files
 |
 ├── src                         <-- Source Folder
-|   ├── *.m                     <-- Source Files
+|   └── *.m                     <-- Source Files
 |
 ├── .gitignore                  <-- Configuring Ignored Files
 |
