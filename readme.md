@@ -27,7 +27,7 @@ This project focuses on exploring the potential applications of the ANC methodol
 ├── src                         <-- Source Folder
 |   └── *.m                     <-- Source Files
 |
-├── .gitignore                  <-- Configuring Ignored Files
+├── .gitignore                  <-- Git Ignore Configuration
 |
 ├── flowchart.wsd               <-- Pipeline Flowchart
 |
