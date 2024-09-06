@@ -77,30 +77,33 @@ disp(Te);
 writetable(Te, fullfile(c.res_path, c.res3));
 
 % play audio
-if strcmpi(play,'none')
-    % nothing
-elseif strcmpi(play,'s')
-    sound(s)
-elseif strcmpi(play,'fx')
-    sound(fx)
-elseif strcmpi(play,'d')
-    sound(d)
-elseif strcmpi(play,'dfx')
-    sound(d-fx)
-elseif strcmpi(play,'w')
-    sound(d-yW)
-elseif strcmpi(play,'lms')
-    sound(d-yLMS)
-elseif strcmpi(play,'nlms')
-    sound(d-yNLMS)
-elseif strcmpi(play,'rls')
-    sound(d-yRLS)
-elseif strcmpi(play,'fxlms')
-    sound(d-yFxLMS)
-elseif strcmpi(play,'fxnlms')
-    sound(d-yFxNLMS)
-elseif strcmpi(play,'fxrls')
-    sound(d-yFxRLS)
+switch lower(play)
+    case 'none'
+        % do nothing
+    case 's'
+        sound(s)
+    case 'fx'
+        sound(fx)
+    case 'd'
+        sound(d)
+    case 'dfx'
+        sound(d-fx)
+    case 'w'
+        sound(d-yW)
+    case 'lms'
+        sound(d-yLMS)
+    case 'nlms'
+        sound(d-yNLMS)
+    case 'rls'
+        sound(d-yRLS)
+    case 'fxlms'
+        sound(d-yFxLMS)
+    case 'fxnlms'
+        sound(d-yFxNLMS)
+    case 'fxrls'
+        sound(d-yFxRLS)
+    otherwise
+        warning('Invalid play option. No audio played.')
 end
 
 % apply moving average filter
