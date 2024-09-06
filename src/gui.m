@@ -43,56 +43,61 @@ classdef gui < matlab.apps.AppBase
     % app initialization and construction
     methods (Access = private)
         function createComponents(app)
-            % create figure and hide until all components are created
-            app.UIFigure = uifigure('Visible', 'off');
-            app.UIFigure.Position = [100 100 450 270];
-            app.UIFigure.Name = 'ANC GUI';
-            app.UIFigure.Resize = 'off';
+            try
+                % create figure and hide until all components are created
+                app.UIFigure = uifigure('Visible', 'off');
+                app.UIFigure.Position = [100 100 450 270];
+                app.UIFigure.Name = 'ANC GUI';
+                app.UIFigure.Resize = 'off';
 
-            % create text area for displaying information
-            app.InfoTextArea = uitextarea(app.UIFigure);
-            app.InfoTextArea.Position = [10 220 430 40];
-            app.InfoTextArea.Value = {'This application implements various algorithms for active noise cancellation by', ...
-                'evaluating their performance through simulations and noisy speech processing'};
-            app.InfoTextArea.Editable = false;
+                % create text area for displaying information
+                app.InfoTextArea = uitextarea(app.UIFigure);
+                app.InfoTextArea.Position = [10 220 430 40];
+                app.InfoTextArea.Value = {'This application implements various algorithms for active noise cancellation by', ...
+                    'evaluating their performance through simulations and noisy speech processing'};
+                app.InfoTextArea.Editable = false;
 
-            % create checkboxes for modes
-            app.RecordModeCheckBox = uicheckbox(app.UIFigure);
-            app.RecordModeCheckBox.Text = 'Record Mode';
-            app.RecordModeCheckBox.Position = [30 190 100 20];
-            app.RecordModeCheckBox.Tooltip = 'Enable to record audio for noise cancellation';
+                % create checkboxes for modes
+                app.RecordModeCheckBox = uicheckbox(app.UIFigure);
+                app.RecordModeCheckBox.Text = 'Record Mode';
+                app.RecordModeCheckBox.Position = [30 190 100 20];
+                app.RecordModeCheckBox.Tooltip = 'Enable to record audio for noise cancellation';
 
-            app.SimulateModeCheckBox = uicheckbox(app.UIFigure);
-            app.SimulateModeCheckBox.Text = 'Simulate Mode';
-            app.SimulateModeCheckBox.Position = [30 160 100 20];
-            app.SimulateModeCheckBox.Tooltip = 'Enable to run simulations of noise cancellation algorithms';
+                app.SimulateModeCheckBox = uicheckbox(app.UIFigure);
+                app.SimulateModeCheckBox.Text = 'Simulate Mode';
+                app.SimulateModeCheckBox.Position = [30 160 100 20];
+                app.SimulateModeCheckBox.Tooltip = 'Enable to run simulations of noise cancellation algorithms';
 
-            app.OptimizeModeCheckBox = uicheckbox(app.UIFigure);
-            app.OptimizeModeCheckBox.Text = 'Optimize Parameters Mode';
-            app.OptimizeModeCheckBox.Position = [30 130 200 20];
-            app.OptimizeModeCheckBox.Tooltip = 'Enable to optimize algorithm parameters';
+                app.OptimizeModeCheckBox = uicheckbox(app.UIFigure);
+                app.OptimizeModeCheckBox.Text = 'Optimize Parameters Mode';
+                app.OptimizeModeCheckBox.Position = [30 130 200 20];
+                app.OptimizeModeCheckBox.Tooltip = 'Enable to optimize algorithm parameters';
 
-            app.NoiseReductionCheckBox = uicheckbox(app.UIFigure);
-            app.NoiseReductionCheckBox.Text = 'Noise Reduction Mode';
-            app.NoiseReductionCheckBox.Position = [30 100 150 20];
-            app.NoiseReductionCheckBox.Tooltip = 'Enable to apply noise reduction to audio';
+                app.NoiseReductionCheckBox = uicheckbox(app.UIFigure);
+                app.NoiseReductionCheckBox.Text = 'Noise Reduction Mode';
+                app.NoiseReductionCheckBox.Position = [30 100 150 20];
+                app.NoiseReductionCheckBox.Tooltip = 'Enable to apply noise reduction to audio';
 
-            % create run button
-            app.RunAppButton = uibutton(app.UIFigure, 'push');
-            app.RunAppButton.ButtonPushedFcn = createCallbackFcn(app, @runApplication, true);
-            app.RunAppButton.Position = [150 50 150 30];
-            app.RunAppButton.Tooltip = 'Click to run the selected modes';
-            app.RunAppButton.Text = 'Run Application';
+                % create run button
+                app.RunAppButton = uibutton(app.UIFigure, 'push');
+                app.RunAppButton.ButtonPushedFcn = createCallbackFcn(app, @runApplication, true);
+                app.RunAppButton.Position = [150 50 150 30];
+                app.RunAppButton.Tooltip = 'Click to run the selected modes';
+                app.RunAppButton.Text = 'Run Application';
 
-            % create close button
-            app.CloseAppButton = uibutton(app.UIFigure, 'push');
-            app.CloseAppButton.ButtonPushedFcn = createCallbackFcn(app, @closeApplication, true);
-            app.CloseAppButton.Position = [150 10 150 30];
-            app.CloseAppButton.Tooltip = 'Click to close the application';
-            app.CloseAppButton.Text = 'Close Application';
+                % create close button
+                app.CloseAppButton = uibutton(app.UIFigure, 'push');
+                app.CloseAppButton.ButtonPushedFcn = createCallbackFcn(app, @closeApplication, true);
+                app.CloseAppButton.Position = [150 10 150 30];
+                app.CloseAppButton.Tooltip = 'Click to close the application';
+                app.CloseAppButton.Text = 'Close Application';
 
-            % show the figure after all components are created
-            app.UIFigure.Visible = 'on';
+                % show the figure after all components are created
+                app.UIFigure.Visible = 'on';
+            catch ME
+                disp('Error creating UI components:');
+                disp(ME.message);
+            end
         end
     end
 
