@@ -17,7 +17,7 @@ This project focuses on exploring the potential applications of the ANC methodol
 
 ### Structure
 ```
-├── config                      <-- Config Folder
+┌── config                      <-- Config Folder
 |   └── *.txt                   <-- Config Files
 |
 ├── data                        <-- Data Folder
@@ -44,7 +44,7 @@ This project focuses on exploring the potential applications of the ANC methodol
 |
 ├── readme.md                   <-- You Are Here
 |
-├── run.m                       <-- Main Matlab Script
+└── run.m                       <-- Main Matlab Script
 ```
 
 ### Adaptive Algorithms
