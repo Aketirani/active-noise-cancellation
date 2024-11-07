@@ -1,16 +1,16 @@
-# Active Noise Cancellation Using Filtered Adaptive Algorithms
+# Active Noise Cancellation Using Filtered Adaptive Algorithms 🔇
 Over the past decade, significant attention has been dedicated to developing practical applications for Active Noise Cancellation (ANC) technology, aimed at addressing noise pollution across multiple domains, including the field of audio. By leveraging adaptive signal processing, ANC, a widely used and advanced technology, is implemented on high-performance digital signal processing (DSP) boards. This technique offers an alternative approach for estimating signals that have been corrupted by additive noise or interference. Fundamentally, ANC involves generating an electro-acoustic sound field to effectively neutralize unwanted noise.
 
-### Table of Contents
-- [Project Overview](#project-overview)
-- [Structure](#structure)
-- [Adaptive Algorithms](#adaptive-algorithms)
-- [Filtered Adaptive Algorithms](#filtered-adaptive-algorithms)
-- [Dataset](#dataset)
-- [Execution](#execution)
-- [Configuration](#configuration)
-- [Installation](#installation)
-- [Conclusion](#conclusion)
+### Table of Contents 📖
+- [Project Overview](#project-overview) 🔍
+- [Structure](#structure) 📂
+- [Adaptive Algorithms](#adaptive-algorithms) 🧠
+- [Filtered Adaptive Algorithms](#filtered-adaptive-algorithms) 🤖
+- [Dataset](#dataset) 📊
+- [Execution](#execution) 🏃‍♂️
+- [Configuration](#configuration) ⚙️
+- [Installation](#installation) 📦
+- [Conclusion](#conclusion) 💡
 
 ### Project Overview
 This project focuses on exploring the potential applications of the ANC methodology through the implementation of ANC systems in MatLab, utilizing adaptive algorithms (LMS, NLMS, RLS) as well as filtered adaptive algorithms (FxLMS, FxNLMS, FxRLS). The performance of these algorithms will be evaluated through a comparison with a Wiener Filter, utilizing both simulated and real signals.
