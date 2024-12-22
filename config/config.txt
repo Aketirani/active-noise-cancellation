@@ -32,3 +32,7 @@ data_path: 'data/'
     data2: 'noise.mat'
     data3: 'bpir.mat'
     data4: 'rec.mat'
+
+% set image path and names
+image_path: 'images/'
+    image1: 'ActiveNoiseCancellation.png'
