@@ -10,8 +10,9 @@ classdef gui < matlab.apps.AppBase
 %   - NoiseReductionCheckBox : checkbox for enabling noise reduction mode
 %   - RunAppButton           : button for running the application
 %   - CloseAppButton         : button for closing the application
+%   - MenuBar                : menu bar for accessing different options
+%   - Config                 : configuration struct that holds user-defined settings
 
-    % properties that correspond to app components
     properties (Access = private)
         UIFigure               matlab.ui.Figure
         InfoTextArea           matlab.ui.control.TextArea
@@ -21,91 +22,154 @@ classdef gui < matlab.apps.AppBase
         NoiseReductionCheckBox matlab.ui.control.CheckBox
         RunAppButton           matlab.ui.control.Button
         CloseAppButton         matlab.ui.control.Button
+        MenuBar                matlab.ui.container.Menu
+        Config                 struct
     end
 
-    % callbacks that handle component events
     methods (Access = private)
-        function runApplication(app, ~)
-            % read the state of the checkboxes
-            rec_mode = app.RecordModeCheckBox.Value;
-            sim_mode = app.SimulateModeCheckBox.Value;
-            optpara_mode = app.OptimizeModeCheckBox.Value;
-            ns_mode = app.NoiseReductionCheckBox.Value;
-
-            % call the anc function with the mode variables
-            anc(rec_mode, sim_mode, optpara_mode, ns_mode);
+        % create new window with content
+        function createWindow(~, title, content, position)
+            newWindow = uifigure('Name', title, 'Position', position, 'Resize', 'off');
+            uitextarea(newWindow, 'Position', [10 10 410 200], 'Value', {content}, 'Editable', false);
+            uibutton(newWindow, 'push', 'Position', [180 20 80 30], 'Text', 'Close', ...
+                'ButtonPushedFcn', @(btn, event) close(newWindow));
         end
+
+        % update new window position relative to main window
+        function position = updatePosition(app, windowHeight, windowWidth)
+            mainWindowPos = app.UIFigure.Position;
+            position = [mainWindowPos(1) + 10, mainWindowPos(2) + 40, windowWidth, windowHeight];
+        end
+
+        % show data descriptions in a new window
+        function showDataDescriptions(app)
+            content = sprintf(['Filter: The filtering coefficients used in noise cancellation algorithms.\n', ...
+                'Noise: The noise signal used for testing noise reduction methods.\n', ...
+                'Recording: The captured audio recording for processing in the system.\n', ...
+                'Speech: The speech data used in the active noise cancellation algorithms.']);
+            position = app.updatePosition(230, 430);
+            app.createWindow('Data', content, position);
+        end
+
+        % show about information in a new window
+        function showAbout(app)
+            content = sprintf(['Active Noise Cancellation\n\n' ...
+                'Author:\nAria Forsing Ketirani\n\n' ...
+                'Description:\nThis project explores the applications of ANC methodology through implementation in MatLab.\n\n' ...
+                '© 2024']);
+            position = app.updatePosition(230, 430);
+            app.createWindow('About', content, position);
+        end
+
+        % display images and allow navigation
+        function showVisuals(app)
+            imagePath = app.Config.plot_path;
+            figIndex = 1;
+            fig = figure('Name', 'Visuals', 'Position', [100, 100, 600, 600]);
+            ax = axes(fig);
+            imageFile = app.Config.fig1;
+            img = imread(fullfile(imagePath, imageFile));
+            imshow(img, 'Parent', ax);
+
+            uicontrol('Style', 'pushbutton', 'String', 'Next', 'Position', [250, 60, 100, 40], ...
+                'Callback', @(src, event) showNextImage(src, fig, ax, app, imagePath));
+            uicontrol('Style', 'pushbutton', 'String', 'Close', 'Position', [250, 10, 100, 40], ...
+                'Callback', @(src, event) closeFigure(src, fig));
+
+            % show next image in sequence
+            function showNextImage(~, ~, axHandle, app, imagePath)
+                figIndex = mod(figIndex, 6) + 1;
+                figName = sprintf('fig%d', figIndex);
+                if isfield(app.Config, figName)
+                    try
+                        img = imread(fullfile(imagePath, app.Config.(figName)));
+                        imshow(img, 'Parent', axHandle);
+                    catch
+                        warning('Failed to load image: %s', figName);
+                    end
+                end
+            end
+
+            % close figure window
+            function closeFigure(~, figHandle)
+                close(figHandle);
+            end
+        end
+
+        % run application based on selected modes
+        function runApplication(app, ~)
+            anc(app.RecordModeCheckBox.Value, app.SimulateModeCheckBox.Value, ...
+                app.OptimizeModeCheckBox.Value, app.NoiseReductionCheckBox.Value);
+        end
+
+        % close the application
         function closeApplication(app, ~)
             delete(app);
         end
     end
 
-    % app initialization and construction
     methods (Access = private)
+        % create all UI components
         function createComponents(app)
             try
-                % create figure and hide until all components are created
-                app.UIFigure = uifigure('Visible', 'off');
-                app.UIFigure.Position = [100 100 450 270];
-                app.UIFigure.Name = 'ANC GUI';
-                app.UIFigure.Resize = 'off';
+                app.Config = loadconfig('config/config.txt');
+                image_fullpath = fullfile(app.Config.image_path, app.Config.image1);
+                app.UIFigure = uifigure('Visible', 'off', 'Position', [100 100 450 480], 'Name', 'ANC GUI', 'Resize', 'off');
+                padding = 10;
+                figureWidth = app.UIFigure.Position(3);
+                figureHeight = app.UIFigure.Position(4);
+                ax = uiaxes(app.UIFigure, 'Position', [padding, figureHeight - padding*2 - 200, figureWidth, 200]);
 
-                % create text area for displaying information
-                app.InfoTextArea = uitextarea(app.UIFigure);
-                app.InfoTextArea.Position = [10 220 430 40];
-                app.InfoTextArea.Value = {'This application implements various algorithms for active noise cancellation by', ...
-                    'evaluating their performance through simulations and noisy speech processing'};
-                app.InfoTextArea.Editable = false;
+                try
+                    img = imread(image_fullpath);
+                    imshow(img, 'Parent', ax);
+                catch
+                    warning('Failed to load image: %s', image_fullpath);
+                end
 
-                % create checkboxes for modes
-                app.RecordModeCheckBox = uicheckbox(app.UIFigure);
-                app.RecordModeCheckBox.Text = 'Record Mode';
-                app.RecordModeCheckBox.Position = [30 190 100 20];
-                app.RecordModeCheckBox.Tooltip = 'Enable to record audio for noise cancellation';
+                app.InfoTextArea = uitextarea(app.UIFigure, 'Position', [padding, ax.Position(2) - padding - 35, figureWidth - 2 * padding, 35], ...
+                    'Value', {'This application implements various algorithms for active noise cancellation by', 'evaluating their performance through simulations and noisy speech processing'}, 'Editable', false);
 
-                app.SimulateModeCheckBox = uicheckbox(app.UIFigure);
-                app.SimulateModeCheckBox.Text = 'Simulate Mode';
-                app.SimulateModeCheckBox.Position = [30 160 100 20];
-                app.SimulateModeCheckBox.Tooltip = 'Enable to run simulations of noise cancellation algorithms';
+                % checkboxes for modes
+                app.RecordModeCheckBox = app.createCheckBox('Record Mode', padding, app.InfoTextArea.Position(2) - padding - 20);
+                app.SimulateModeCheckBox = app.createCheckBox('Simulate Mode', padding, app.RecordModeCheckBox.Position(2) - padding - 20);
+                app.OptimizeModeCheckBox = app.createCheckBox('Optimize Parameters Mode', padding, app.SimulateModeCheckBox.Position(2) - padding - 20);
+                app.NoiseReductionCheckBox = app.createCheckBox('Noise Reduction Mode', padding, app.OptimizeModeCheckBox.Position(2) - padding - 20);
 
-                app.OptimizeModeCheckBox = uicheckbox(app.UIFigure);
-                app.OptimizeModeCheckBox.Text = 'Optimize Parameters Mode';
-                app.OptimizeModeCheckBox.Position = [30 130 200 20];
-                app.OptimizeModeCheckBox.Tooltip = 'Enable to optimize algorithm parameters';
+                % buttons for running and closing
+                app.RunAppButton = uibutton(app.UIFigure, 'push', 'Position', [padding, app.NoiseReductionCheckBox.Position(2) - padding - 30, figureWidth - 2 * padding, 30], 'Text', 'Run Application', ...
+                    'ButtonPushedFcn', createCallbackFcn(app, @runApplication, true));
 
-                app.NoiseReductionCheckBox = uicheckbox(app.UIFigure);
-                app.NoiseReductionCheckBox.Text = 'Noise Reduction Mode';
-                app.NoiseReductionCheckBox.Position = [30 100 150 20];
-                app.NoiseReductionCheckBox.Tooltip = 'Enable to apply noise reduction to audio';
+                app.CloseAppButton = uibutton(app.UIFigure, 'push', 'Position', [padding, app.RunAppButton.Position(2) - padding - 30, figureWidth - 2 * padding, 30], 'Text', 'Close Application', ...
+                    'ButtonPushedFcn', createCallbackFcn(app, @closeApplication, true));
 
-                % create run button
-                app.RunAppButton = uibutton(app.UIFigure, 'push');
-                app.RunAppButton.ButtonPushedFcn = createCallbackFcn(app, @runApplication, true);
-                app.RunAppButton.Position = [150 50 150 30];
-                app.RunAppButton.Tooltip = 'Click to run the selected modes';
-                app.RunAppButton.Text = 'Run Application';
+                % menu options
+                app.MenuBar = uimenu(app.UIFigure, 'Text', 'Menu');
+                uimenu(app.MenuBar, 'Text', 'Data', 'MenuSelectedFcn', @(src, event) app.showDataDescriptions());
+                uimenu(app.MenuBar, 'Text', 'Visuals', 'MenuSelectedFcn', @(src, event) app.showVisuals());
+                uimenu(app.MenuBar, 'Text', 'About', 'MenuSelectedFcn', @(src, event) app.showAbout());
 
-                % create close button
-                app.CloseAppButton = uibutton(app.UIFigure, 'push');
-                app.CloseAppButton.ButtonPushedFcn = createCallbackFcn(app, @closeApplication, true);
-                app.CloseAppButton.Position = [150 10 150 30];
-                app.CloseAppButton.Tooltip = 'Click to close the application';
-                app.CloseAppButton.Text = 'Close Application';
-
-                % show the figure after all components are created
+                % show the UI
                 app.UIFigure.Visible = 'on';
             catch ME
                 disp('Error creating UI components:');
                 disp(ME.message);
             end
         end
+
+        % helper function to create checkboxes
+        function checkbox = createCheckBox(app, text, x, y)
+            checkbox = uicheckbox(app.UIFigure, 'Text', text, 'Position', [x, y, app.UIFigure.Position(3) - 2 * x, 20]);
+        end
     end
 
-    % app creation and deletion
     methods (Access = public)
+        % constructor for the gui class
         function app = gui
             createComponents(app);
         end
+
+        % destructor for the gui class
         function delete(app)
             delete(app.UIFigure);
         end
