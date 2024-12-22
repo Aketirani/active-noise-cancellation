@@ -112,14 +112,20 @@ classdef gui < matlab.apps.AppBase
         % create all UI components
         function createComponents(app)
             try
+                % load configuration
                 app.Config = loadconfig('config/config.txt');
                 image_fullpath = fullfile(app.Config.image_path, app.Config.image1);
+                icon_run = fullfile(app.Config.image_path, app.Config.image2);
+                icon_exit = fullfile(app.Config.image_path, app.Config.image3);
+
+                % UIFigure setup
                 app.UIFigure = uifigure('Visible', 'off', 'Position', [100 100 450 480], 'Name', 'ANC GUI', 'Resize', 'off');
                 padding = 10;
                 figureWidth = app.UIFigure.Position(3);
                 figureHeight = app.UIFigure.Position(4);
                 ax = uiaxes(app.UIFigure, 'Position', [padding, figureHeight - padding*2 - 200, figureWidth, 200]);
 
+                % try loading image
                 try
                     img = imread(image_fullpath);
                     imshow(img, 'Parent', ax);
@@ -127,8 +133,10 @@ classdef gui < matlab.apps.AppBase
                     warning('Failed to load image: %s', image_fullpath);
                 end
 
+                % info text area
                 app.InfoTextArea = uitextarea(app.UIFigure, 'Position', [padding, ax.Position(2) - padding - 35, figureWidth - 2 * padding, 35], ...
-                    'Value', {'This application implements various algorithms for active noise cancellation by', 'evaluating their performance through simulations and noisy speech processing'}, 'Editable', false);
+                    'Value', {'This application implements various algorithms for active noise cancellation by', 'evaluating their performance through simulations and noisy speech processing'}, ...
+                    'Editable', false, 'BackgroundColor', [1, 1, 0], 'FontName', 'Arial', 'FontSize', 11, 'FontWeight', 'bold');
 
                 % checkboxes for modes
                 app.RecordModeCheckBox = app.createCheckBox('Record Mode', padding, app.InfoTextArea.Position(2) - padding - 20);
@@ -136,12 +144,11 @@ classdef gui < matlab.apps.AppBase
                 app.OptimizeModeCheckBox = app.createCheckBox('Optimize Parameters Mode', padding, app.SimulateModeCheckBox.Position(2) - padding - 20);
                 app.NoiseReductionCheckBox = app.createCheckBox('Noise Reduction Mode', padding, app.OptimizeModeCheckBox.Position(2) - padding - 20);
 
-                % buttons for running and closing
-                app.RunAppButton = uibutton(app.UIFigure, 'push', 'Position', [padding, app.NoiseReductionCheckBox.Position(2) - padding - 30, figureWidth - 2 * padding, 30], 'Text', 'Run Application', ...
-                    'ButtonPushedFcn', createCallbackFcn(app, @runApplication, true));
-
-                app.CloseAppButton = uibutton(app.UIFigure, 'push', 'Position', [padding, app.RunAppButton.Position(2) - padding - 30, figureWidth - 2 * padding, 30], 'Text', 'Close Application', ...
-                    'ButtonPushedFcn', createCallbackFcn(app, @closeApplication, true));
+                % run and close buttons
+                app.RunAppButton = uibutton(app.UIFigure, 'push', 'Position', [figureWidth/3, app.NoiseReductionCheckBox.Position(2) - padding - 30, figureWidth - 30 * padding, 30], 'Text', 'Run Application', ...
+                    'ButtonPushedFcn', createCallbackFcn(app, @runApplication, true), 'BackgroundColor', [0, 0.5, 0], 'Icon', icon_run, 'FontName', 'Arial', 'FontSize', 11, 'FontWeight', 'bold');
+                app.CloseAppButton = uibutton(app.UIFigure, 'push', 'Position', [figureWidth/3, app.RunAppButton.Position(2) - padding - 30, figureWidth - 30 * padding, 30], 'Text', 'Close Application', ...
+                    'ButtonPushedFcn', createCallbackFcn(app, @closeApplication, true), 'BackgroundColor', [1, 0, 0], 'Icon', icon_exit, 'FontName', 'Arial', 'FontSize', 11, 'FontWeight', 'bold');
 
                 % menu options
                 app.MenuBar = uimenu(app.UIFigure, 'Text', 'Menu');
@@ -156,6 +163,7 @@ classdef gui < matlab.apps.AppBase
                 disp(ME.message);
             end
         end
+
 
         % helper function to create checkboxes
         function checkbox = createCheckBox(app, text, x, y)
