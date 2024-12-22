@@ -18,9 +18,10 @@ try
 
     % load data
     fprintf(log_file, 'Loading Data...\n');
-    s = load(fullfile(c.data_path, c.data1));  % speech x(n)
+    s = load(fullfile(c.data_path, c.data1));  % speech
     x = load(fullfile(c.data_path, c.data2));  % noise
-    Pw = load(fullfile(c.data_path, c.data3)); % filter P(z)
+    Pw = load(fullfile(c.data_path, c.data3)); % filter
+    r = load(fullfile(c.data_path, c.data4));  % recording
 
     % initialize parameters
     fprintf(log_file, 'Initializing Parameters...\n');
@@ -37,7 +38,7 @@ try
     % run record audio
     if rec_mode == true
         fprintf(log_file, 'Running Record Audio...\n');
-        s = recorder(d, c, p);
+        r = recorder(d, c, p);
     end
 
     % run simulate adaptive filters
