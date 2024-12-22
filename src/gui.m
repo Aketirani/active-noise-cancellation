@@ -10,8 +10,9 @@ classdef gui < matlab.apps.AppBase
 %   - NoiseReductionCheckBox : checkbox for enabling noise reduction mode
 %   - RunAppButton           : button for running the application
 %   - CloseAppButton         : button for closing the application
+%   - MenuBar                : menu bar for accessing different options
+%   - Config                 : configuration struct that holds user-defined settings
 
-    % properties that correspond to app components
     properties (Access = private)
         UIFigure               matlab.ui.Figure
         InfoTextArea           matlab.ui.control.TextArea
@@ -22,10 +23,63 @@ classdef gui < matlab.apps.AppBase
         RunAppButton           matlab.ui.control.Button
         CloseAppButton         matlab.ui.control.Button
         MenuBar                matlab.ui.container.Menu
+        Config                 struct
     end
 
-    % callback methods
     methods (Access = private)
+        function createWindow(app, title, content, position)
+            % Helper to create new windows with content
+            newWindow = uifigure('Name', title, 'Position', position);
+            newWindow.Resize = 'off';
+
+            % Create text area for content
+            textArea = uitextarea(newWindow);
+            textArea.Position = [10 10 410 200];
+            textArea.Value = {content};
+            textArea.Editable = false;
+
+            % Close button
+            closeButton = uibutton(newWindow, 'push');
+            closeButton.Position = [180 20 80 30];
+            closeButton.Text = 'Close';
+            closeButton.ButtonPushedFcn = @(btn, event) close(newWindow);
+        end
+
+        function position = updatePosition(app, windowHeight, windowWidth)
+            % Update new window position relative to main window
+            mainWindowPos = app.UIFigure.Position;
+            position = [mainWindowPos(1) + 10, mainWindowPos(2) + 40, windowWidth, windowHeight];
+        end
+
+        function showDataDescriptions(app)
+            content = sprintf(['Filter: The filtering coefficients used in noise cancellation algorithms.\n', ...
+                'Noise: The noise signal used for testing noise reduction methods.\n', ...
+                'Recording: The captured audio recording for processing in the system.\n', ...
+                'Speech: The speech data used in the active noise cancellation algorithms.']);
+            position = app.updatePosition(230, 430);
+            app.createWindow('Data', content, position);
+        end
+
+        function showAbout(app)
+            content = sprintf(['Active Noise Cancellation\n\n' ...
+                'Author:\nAria Forsing Ketirani\n\n' ...
+                'Description:\nThis project explores the applications of ANC methodology through implementation in MatLab.\n\n' ...
+                '© 2024']);
+            position = app.updatePosition(230, 430);
+            app.createWindow('About', content, position);
+        end
+
+        function showVisuals(app)
+            content = sprintf(['Noisy Speech Comparisons\n', ...
+                'Noisy Speech Convergence\n', ...
+                'Noisy Speech Performance\n', ...
+                'Optimal Parameters\n', ...
+                'Simulation Convergence\n', ...
+                'Simulation Performance']);
+            position = app.updatePosition(230, 430);
+            app.createWindow('Visuals', content, position);
+        end
+
         function runApplication(app, ~)
             rec_mode = app.RecordModeCheckBox.Value;
             sim_mode = app.SimulateModeCheckBox.Value;
@@ -37,113 +91,28 @@ classdef gui < matlab.apps.AppBase
         function closeApplication(app, ~)
             delete(app);
         end
-
-        % callback to show descriptions of all data in a new pop-up window
-        function showDataDescriptions(app)
-            % create the description content
-            descriptions = sprintf(['Filter: The filtering coefficients used in noise cancellation algorithms.\n', ...
-                'Noise: The noise signal used for testing noise reduction methods.\n', ...
-                'Recording: The captured audio recording for processing in the system.\n', ...
-                'Speech: The speech data used in the active noise cancellation algorithms.']);
-
-            % create a new window to display the descriptions
-            descriptionWindow = uifigure('Name', 'Data', 'Position', [10 40 430 230]);
-            descriptionWindow.Resize = 'off';
-
-            % add a TextArea in the new window to display descriptions
-            descriptionTextArea = uitextarea(descriptionWindow);
-            descriptionTextArea.Position = [10 10 410 200];
-            descriptionTextArea.Value = {descriptions};
-            descriptionTextArea.Editable = false;
-
-            % add a close button
-            closeButton = uibutton(descriptionWindow, 'push');
-            closeButton.Position = [180 20 80 30];
-            closeButton.Text = 'Close';
-            closeButton.ButtonPushedFcn = @(btn, event) close(descriptionWindow);
-        end
-
-        % callback to show the about message
-        function showAbout(app)
-            % create the about content
-            aboutContent = sprintf(['Active Noise Cancellation\n\n' ...
-                'Author:\nAria Forsing Ketirani\n\n' ...
-                'Description:\nThis project focuses on exploring the potential applications of the ANC methodology through the implementation of ANC systems in MatLab.\n\n' ...
-                '© 2024']);
-
-            % create a new window to display the about information
-            aboutWindow = uifigure('Name', 'About', 'Position', [10 40 430 230]);
-            aboutWindow.Resize = 'off';
-
-            % add a TextArea in the new window to display the about content
-            aboutTextArea = uitextarea(aboutWindow);
-            aboutTextArea.Position = [10 10 410 200];
-            aboutTextArea.Value = {aboutContent};
-            aboutTextArea.Editable = false;
-
-            % add a close button
-            closeButton = uibutton(aboutWindow, 'push');
-            closeButton.Position = [180 20 80 30];
-            closeButton.Text = 'Close';
-            closeButton.ButtonPushedFcn = @(btn, event) close(aboutWindow);
-        end
-
-        % callback to show all available visuals in a new pop-up window
-        function showVisuals(app)
-            % create the visuals content
-            visualsList = sprintf(['Noisy Speech Comparisons\n', ...
-                'Noisy Speech Convergence\n', ...
-                'Noisy Speech Performance\n', ...
-                'Optimal Parameters\n', ...
-                'Simulation Convergence\n', ...
-                'Simulation Performance']);
-
-            % create a new window to display the visuals list
-            visualsWindow = uifigure('Name', 'Visuals', 'Position', [10 40 430 230]);
-            visualsWindow.Resize = 'off';
-
-            % add a TextArea in the new window to display visuals list
-            visualsTextArea = uitextarea(visualsWindow);
-            visualsTextArea.Position = [10 10 410 200];
-            visualsTextArea.Value = {visualsList};
-            visualsTextArea.Editable = false;
-
-            % add a close button
-            closeButton = uibutton(visualsWindow, 'push');
-            closeButton.Position = [180 20 80 30];
-            closeButton.Text = 'Close';
-            closeButton.ButtonPushedFcn = @(btn, event) close(visualsWindow);
-        end
     end
 
-    % method to create GUI components
     methods (Access = private)
         function createComponents(app)
             try
-                % read config
-                c = loadconfig('config/config.txt');
+                % Read config from file (use flexible config)
+                app.Config = loadconfig('config/config.txt');
+                image_fullpath = fullfile(app.Config.image_path, app.Config.image1);
 
-                % construct image path
-                image_fullpath = fullfile(c.image_path, c.image1);
-
-                % create figure
+                % Create main figure window
                 app.UIFigure = uifigure('Visible', 'off');
                 app.UIFigure.Position = [100 100 450 480];
                 app.UIFigure.Name = 'ANC GUI';
                 app.UIFigure.Resize = 'off';
 
-                % padding
                 padding = 10;
-
-                % calculate dynamic positions
                 figureWidth = app.UIFigure.Position(3);
                 figureHeight = app.UIFigure.Position(4);
 
-                % image
-                imageHeight = 200;
+                % Image
                 ax = uiaxes(app.UIFigure);
-                ax.Position = [padding, figureHeight - padding*2 - imageHeight, ...
-                    figureWidth, imageHeight];
+                ax.Position = [padding, figureHeight - padding*2 - 200, figureWidth, 200];
                 try
                     img = imread(image_fullpath);
                     imshow(img, 'Parent', ax);
@@ -151,68 +120,51 @@ classdef gui < matlab.apps.AppBase
                     warning('Failed to load image: %s', image_fullpath);
                 end
 
-                % text area
-                textHeight = 35;
+                % Info text area
                 app.InfoTextArea = uitextarea(app.UIFigure);
-                app.InfoTextArea.Position = [padding, ax.Position(2) - padding - textHeight, ...
-                    figureWidth - 2 * padding, textHeight];
+                app.InfoTextArea.Position = [padding, ax.Position(2) - padding - 35, figureWidth - 2 * padding, 35];
                 app.InfoTextArea.Value = {'This application implements various algorithms for active noise cancellation by', ...
                     'evaluating their performance through simulations and noisy speech processing'};
                 app.InfoTextArea.Editable = false;
 
-                % checkboxes
-                checkboxHeight = 20;
-                app.RecordModeCheckBox = uicheckbox(app.UIFigure);
-                app.RecordModeCheckBox.Text = 'Record Mode';
-                app.RecordModeCheckBox.Position = [padding, app.InfoTextArea.Position(2) - padding - checkboxHeight, ...
-                    figureWidth - 2 * padding, checkboxHeight];
+                % Checkboxes with generalized creation
+                app.RecordModeCheckBox = app.createCheckBox('Record Mode', padding, app.InfoTextArea.Position(2) - padding - 20);
+                app.SimulateModeCheckBox = app.createCheckBox('Simulate Mode', padding, app.RecordModeCheckBox.Position(2) - padding - 20);
+                app.OptimizeModeCheckBox = app.createCheckBox('Optimize Parameters Mode', padding, app.SimulateModeCheckBox.Position(2) - padding - 20);
+                app.NoiseReductionCheckBox = app.createCheckBox('Noise Reduction Mode', padding, app.OptimizeModeCheckBox.Position(2) - padding - 20);
 
-                app.SimulateModeCheckBox = uicheckbox(app.UIFigure);
-                app.SimulateModeCheckBox.Text = 'Simulate Mode';
-                app.SimulateModeCheckBox.Position = [padding, app.RecordModeCheckBox.Position(2) - padding - checkboxHeight, ...
-                    figureWidth - 2 * padding, checkboxHeight];
-
-                app.OptimizeModeCheckBox = uicheckbox(app.UIFigure);
-                app.OptimizeModeCheckBox.Text = 'Optimize Parameters Mode';
-                app.OptimizeModeCheckBox.Position = [padding, app.SimulateModeCheckBox.Position(2) - padding - checkboxHeight, ...
-                    figureWidth - 2 * padding, checkboxHeight];
-
-                app.NoiseReductionCheckBox = uicheckbox(app.UIFigure);
-                app.NoiseReductionCheckBox.Text = 'Noise Reduction Mode';
-                app.NoiseReductionCheckBox.Position = [padding, app.OptimizeModeCheckBox.Position(2) - padding - checkboxHeight, ...
-                    figureWidth - 2 * padding, checkboxHeight];
-
-                % run button
-                buttonHeight = 30;
+                % Buttons
                 app.RunAppButton = uibutton(app.UIFigure, 'push');
                 app.RunAppButton.ButtonPushedFcn = createCallbackFcn(app, @runApplication, true);
-                app.RunAppButton.Position = [padding, app.NoiseReductionCheckBox.Position(2) - padding - buttonHeight, ...
-                    figureWidth - 2 * padding, buttonHeight];
+                app.RunAppButton.Position = [padding, app.NoiseReductionCheckBox.Position(2) - padding - 30, figureWidth - 2 * padding, 30];
                 app.RunAppButton.Text = 'Run Application';
 
-                % close button
                 app.CloseAppButton = uibutton(app.UIFigure, 'push');
                 app.CloseAppButton.ButtonPushedFcn = createCallbackFcn(app, @closeApplication, true);
-                app.CloseAppButton.Position = [padding, app.RunAppButton.Position(2) - padding - buttonHeight, ...
-                    figureWidth - 2 * padding, buttonHeight];
+                app.CloseAppButton.Position = [padding, app.RunAppButton.Position(2) - padding - 30, figureWidth - 2 * padding, 30];
                 app.CloseAppButton.Text = 'Close Application';
 
-                % create menu bars
+                % Menu Bar
                 app.MenuBar = uimenu(app.UIFigure, 'Text', 'Menu');
                 uimenu(app.MenuBar, 'Text', 'Data', 'MenuSelectedFcn', @(src, event) app.showDataDescriptions());
                 uimenu(app.MenuBar, 'Text', 'Visuals', 'MenuSelectedFcn', @(src, event) app.showVisuals());
                 uimenu(app.MenuBar, 'Text', 'About', 'MenuSelectedFcn', @(src, event) app.showAbout());
 
-                % show figure
+                % Show the UI
                 app.UIFigure.Visible = 'on';
             catch ME
                 disp('Error creating UI components:');
                 disp(ME.message);
             end
         end
+
+        function checkbox = createCheckBox(app, text, x, y)
+            checkbox = uicheckbox(app.UIFigure);
+            checkbox.Text = text;
+            checkbox.Position = [x, y, app.UIFigure.Position(3) - 2 * x, 20];
+        end
     end
 
-    % constructor and destructor
     methods (Access = public)
         function app = gui
             createComponents(app);
