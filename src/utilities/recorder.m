@@ -1,4 +1,4 @@
-function s = recorder(d, c, p)
+function rec = recorder(d, c, p)
 % Record audio and save it to a file
 %
 % Inputs:
@@ -7,7 +7,7 @@ function s = recorder(d, c, p)
 %   p : [0,1] whether to play the recorded audio
 %
 % Output:
-%   s : [Nx1] recorded audio data
+%   rec : [Nx1] recorded audio data
 
 % validate inputs
 assert(isnumeric(d) && isscalar(d) && d > 0, 'duration must be a positive scalar.');
@@ -26,10 +26,10 @@ recordblocking(recObj, d);
 disp('Recording Finished.');
 
 % save recording
-s = getaudiodata(recObj);
-save(fullfile(c.data_path, c.data4), 's');
+rec = getaudiodata(recObj);
+save(fullfile(c.data_path, c.data4), 'rec');
 
 % play recording
 if p == 1
-    sound(s, fs);
+    sound(rec, fs);
 end
