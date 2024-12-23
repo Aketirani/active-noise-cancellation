@@ -71,8 +71,8 @@ for L = L_vec
     end
     c1 = 1;
     c2 = c2+1;
-    mprogress(c2/length(L_vec)); % elapsed and remaining time for L
 end
+
 % find the value of the lowest mean square error and its index
 [mse_min_v, idx_v] = min(min(mse_mat));
 
@@ -80,11 +80,9 @@ end
 [~, idx_f] = min(mse_mat);
 opt_L = L_vec(idx_f(idx_v));
 opt_mu = mu_vec(idx_v);
-fprintf('\n<strong>OPTIMAL PARAMETERS RESULTS:</strong>\n');
-Te = table({alg}, opt_L, opt_mu, 'VariableNames', {'Algorithm', 'Filter Length', 'Step Size'});
-disp(Te);
 
 % write table
+Te = table({alg}, opt_L, opt_mu, 'VariableNames', {'Algorithm', 'Filter Length', 'Step Size'});
 writetable(Te, fullfile(c.res_path, c.res3));
 
 % plot
