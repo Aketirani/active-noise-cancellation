@@ -12,6 +12,7 @@ classdef gui < matlab.apps.AppBase
 %   - CloseAppButton         : button for closing the application
 %   - MenuBar                : menu bar for accessing different options
 %   - Config                 : configuration struct that holds user-defined settings
+%   - OutputTextArea         : area for displaying logs and output
 
     properties (Access = private)
         UIFigure               matlab.ui.Figure
@@ -24,6 +25,7 @@ classdef gui < matlab.apps.AppBase
         CloseAppButton         matlab.ui.control.Button
         MenuBar                matlab.ui.container.Menu
         Config                 struct
+        OutputTextArea         matlab.ui.control.TextArea
     end
 
     methods (Access = private)
@@ -98,13 +100,31 @@ classdef gui < matlab.apps.AppBase
 
         % run application based on selected modes
         function runApplication(app, ~)
-            anc(app.RecordModeCheckBox.Value, app.SimulateModeCheckBox.Value, ...
-                app.OptimizeModeCheckBox.Value, app.NoiseReductionCheckBox.Value);
+            logMessage(app, 'Running application...');
+            try
+                anc(app.RecordModeCheckBox.Value, app.SimulateModeCheckBox.Value, app.OptimizeModeCheckBox.Value, app.NoiseReductionCheckBox.Value);
+                logMessage(app, 'Application completed successfully.');
+            catch ME
+                logMessage(app, ['Error: ', ME.message]);
+            end
         end
 
         % close the application
         function closeApplication(app, ~)
             delete(app);
+        end
+
+        % helper function to create checkboxes
+        function checkbox = createCheckBox(app, text, x, y)
+            checkbox = uicheckbox(app.UIFigure, 'Text', text, 'Position', [x, y, app.UIFigure.Position(3) - 2 * x, 20]);
+        end
+
+        % helper function to log messages
+        function logMessage(app, message)
+            currentLogs = app.OutputTextArea.Value;
+            currentLogs{end + 1} = message;
+            app.OutputTextArea.Value = currentLogs;
+            drawnow;
         end
     end
 
@@ -119,7 +139,7 @@ classdef gui < matlab.apps.AppBase
                 icon_exit = fullfile(app.Config.image_path, app.Config.image3);
 
                 % UIFigure setup
-                app.UIFigure = uifigure('Visible', 'off', 'Position', [100 100 450 480], 'Name', 'ANC GUI', 'Resize', 'off');
+                app.UIFigure = uifigure('Visible', 'off', 'Position', [100 100 450 600], 'Name', 'ANC GUI', 'Resize', 'off');
                 padding = 10;
                 figureWidth = app.UIFigure.Position(3);
                 figureHeight = app.UIFigure.Position(4);
@@ -144,8 +164,13 @@ classdef gui < matlab.apps.AppBase
                 app.OptimizeModeCheckBox = app.createCheckBox('Optimize Parameters Mode', padding, app.SimulateModeCheckBox.Position(2) - padding - 20);
                 app.NoiseReductionCheckBox = app.createCheckBox('Noise Reduction Mode', padding, app.OptimizeModeCheckBox.Position(2) - padding - 20);
 
+                % output text area
+                app.OutputTextArea = uitextarea(app.UIFigure, ...
+                    'Position', [padding, app.NoiseReductionCheckBox.Position(2) - 110, figureWidth - 2 * padding, 100], 'Editable', false, ...
+                    'Value', {'Output logs will appear here.'}, 'BackgroundColor', [1, 1, 1], 'FontName', 'Courier', 'FontSize', 10);
+
                 % run and close buttons
-                app.RunAppButton = uibutton(app.UIFigure, 'push', 'Position', [figureWidth/3, app.NoiseReductionCheckBox.Position(2) - padding - 30, figureWidth - 30 * padding, 30], 'Text', 'Run Application', ...
+                app.RunAppButton = uibutton(app.UIFigure, 'push', 'Position', [figureWidth/3, app.OutputTextArea.Position(2) - padding - 30, figureWidth - 30 * padding, 30], 'Text', 'Run Application', ...
                     'ButtonPushedFcn', createCallbackFcn(app, @runApplication, true), 'BackgroundColor', [0, 0.5, 0], 'Icon', icon_run, 'FontName', 'Arial', 'FontSize', 11, 'FontWeight', 'bold');
                 app.CloseAppButton = uibutton(app.UIFigure, 'push', 'Position', [figureWidth/3, app.RunAppButton.Position(2) - padding - 30, figureWidth - 30 * padding, 30], 'Text', 'Close Application', ...
                     'ButtonPushedFcn', createCallbackFcn(app, @closeApplication, true), 'BackgroundColor', [1, 0, 0], 'Icon', icon_exit, 'FontName', 'Arial', 'FontSize', 11, 'FontWeight', 'bold');
@@ -162,12 +187,6 @@ classdef gui < matlab.apps.AppBase
                 disp('Error creating UI components:');
                 disp(ME.message);
             end
-        end
-
-
-        % helper function to create checkboxes
-        function checkbox = createCheckBox(app, text, x, y)
-            checkbox = uicheckbox(app.UIFigure, 'Text', text, 'Position', [x, y, app.UIFigure.Position(3) - 2 * x, 20]);
         end
     end
 
