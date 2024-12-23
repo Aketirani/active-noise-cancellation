@@ -71,8 +71,8 @@ for L = L_vec
     end
     c1 = 1;
     c2 = c2+1;
-    mprogress(c2/length(L_vec)); % elapsed and remaining time for L
 end
+
 % find the value of the lowest mean square error and its index
 [mse_min_v, idx_v] = min(min(mse_mat));
 

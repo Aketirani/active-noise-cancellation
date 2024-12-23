@@ -56,8 +56,6 @@ for i = 1:N
     [yFxLMS, eFxLMS(:,i)] = fxlms(xn, d, L, mu_FxLMS, Sw, Shw, Shx);
     [yFxNLMS, eFxNLMS(:,i)] = fxnlms(xn, d, L, mu_FxNLMS, Sw, Shw, Shx, delta);
     [yFxRLS, eFxRLS(:,i)] = fxrls(xn, d, L, beta, lambda, Sw, Shw, Shx);
-
-    mprogress(i/N);   % elapsed and remaining time
 end
 
 % compute average mean square error for all experiments
