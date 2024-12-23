@@ -70,13 +70,11 @@ mse_fxnlms = sum(eFxNLMS,2)/N;
 mse_fxrls = sum(eFxRLS,2)/N;
 
 % create table
-fprintf('\n<strong>SIMULATION ERRORS:</strong>\n');
 methods = {'W', 'LMS', 'NLMS', 'RLS', 'FxLMS', 'FxNLMS', 'FxRLS'};
 mse = [mse_w(end); mse_lms(end); mse_nlms(end); mse_rls(end); mse_fxlms(end); mse_fxnlms(end); mse_fxrls(end)];
-Te = table(methods', mse, 'VariableNames', {'Method', 'Error'});
-disp(Te);
 
 % write table
+Te = table(methods', mse, 'VariableNames', {'Method', 'Error'});
 writetable(Te, fullfile(c.res_path, c.res1));
 
 % plot

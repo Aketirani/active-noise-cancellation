@@ -139,11 +139,11 @@ classdef gui < matlab.apps.AppBase
                 icon_exit = fullfile(app.Config.image_path, app.Config.image3);
 
                 % UIFigure setup
-                app.UIFigure = uifigure('Visible', 'off', 'Position', [100 100 450 600], 'Name', 'ANC GUI', 'Resize', 'off');
+                app.UIFigure = uifigure('Visible', 'off', 'Position', [100 100 450 550], 'Name', 'ANC GUI', 'Resize', 'off');
                 padding = 10;
                 figureWidth = app.UIFigure.Position(3);
                 figureHeight = app.UIFigure.Position(4);
-                ax = uiaxes(app.UIFigure, 'Position', [padding, figureHeight - padding*2 - 200, figureWidth, 200]);
+                ax = uiaxes(app.UIFigure, 'Position', [padding, figureHeight - padding - 200, figureWidth, 200]);
 
                 % try loading image
                 try
@@ -154,7 +154,7 @@ classdef gui < matlab.apps.AppBase
                 end
 
                 % info text area
-                app.InfoTextArea = uitextarea(app.UIFigure, 'Position', [padding, ax.Position(2) - padding - 35, figureWidth - 2 * padding, 35], ...
+                app.InfoTextArea = uitextarea(app.UIFigure, 'Position', [padding, ax.Position(2) - 2 * padding, figureWidth - 2 * padding, 35], ...
                     'Value', {'This application implements various algorithms for active noise cancellation by', 'evaluating their performance through simulations and noisy speech processing'}, ...
                     'Editable', false, 'BackgroundColor', [1, 1, 0], 'FontName', 'Arial', 'FontSize', 11, 'FontWeight', 'bold');
 
