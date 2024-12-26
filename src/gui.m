@@ -115,8 +115,8 @@ classdef gui < matlab.apps.AppBase
         end
 
         % helper function to create checkboxes
-        function checkbox = createCheckBox(app, text, x, y)
-            checkbox = uicheckbox(app.UIFigure, 'Text', text, 'Position', [x, y, app.UIFigure.Position(3) - 2 * x, 20]);
+        function checkbox = createCheckBox(app, text, x, y, tooltip)
+            checkbox = uicheckbox(app.UIFigure, 'Text', text, 'Position', [x, y, app.UIFigure.Position(3) - 2 * x, 20], 'Tooltip', tooltip);
         end
 
         % helper function to log messages
@@ -158,11 +158,15 @@ classdef gui < matlab.apps.AppBase
                     'Value', {'This application implements various algorithms for active noise cancellation by', 'evaluating their performance through simulations and noisy speech processing'}, ...
                     'Editable', false, 'BackgroundColor', [1, 1, 0], 'FontName', 'Arial', 'FontSize', 11, 'FontWeight', 'bold');
 
-                % checkboxes for modes
-                app.RecordModeCheckBox = app.createCheckBox('Record Mode', padding, app.InfoTextArea.Position(2) - padding - 20);
-                app.SimulateModeCheckBox = app.createCheckBox('Simulate Mode', padding, app.RecordModeCheckBox.Position(2) - padding - 20);
-                app.OptimizeModeCheckBox = app.createCheckBox('Optimize Parameters Mode', padding, app.SimulateModeCheckBox.Position(2) - padding - 20);
-                app.NoiseReductionCheckBox = app.createCheckBox('Noise Reduction Mode', padding, app.OptimizeModeCheckBox.Position(2) - padding - 20);
+                % checkboxes for modes with updated tooltips
+                app.RecordModeCheckBox = app.createCheckBox('Record Mode', padding, app.InfoTextArea.Position(2) - padding - 20, ...
+                    'Record audio from a connected microphone to capture real-world sound for further processing');
+                app.SimulateModeCheckBox = app.createCheckBox('Simulate Mode', padding, app.RecordModeCheckBox.Position(2) - padding - 20, ...
+                    'Simulate the operation of adaptive filters using predefined data to model and test filter behavior');
+                app.OptimizeModeCheckBox = app.createCheckBox('Optimize Parameters Mode', padding, app.SimulateModeCheckBox.Position(2) - padding - 20, ...
+                    'Find the best filter parameters to improve filter performance through optimization techniques');
+                app.NoiseReductionCheckBox = app.createCheckBox('Noise Reduction Mode', padding, app.OptimizeModeCheckBox.Position(2) - padding - 20, ...
+                    'Apply noise reduction algorithms to clean noisy audio signals and improve clarity and quality');
 
                 % output text area
                 app.OutputTextArea = uitextarea(app.UIFigure, ...
