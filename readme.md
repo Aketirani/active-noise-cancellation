@@ -75,6 +75,7 @@ Parameters can be modified within `anc.m` file to experiment:
 | `mu_vec`  | Step size vector      |
 | `alg`     | Algorithm type        |
 | `play`    | Audio to play         |
+| `src`     | Speech signal         |
 
 ### Execution
 Execute `run.m` to initiate the entire pipeline.
