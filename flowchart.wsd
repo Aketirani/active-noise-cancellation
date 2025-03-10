@@ -16,6 +16,7 @@ package "anc" {
                 :simulate adaptive filters;
                 :optimize parameters;
                 :noise reduction on noisy speech;
+                :write log;
             }
         }
     }

@@ -25,15 +25,16 @@ try
 
     % initialize parameters
     fprintf(log_file, 'Initializing Parameters...\n');
-    d = 4;                                     % duration of the recording
-    p = 0;                                     % play the recording
-    T = 2000;                                  % iterations
-    N = 200;                                   % experiments
+    d = 4;                                     % recording duration
+    p = 0;                                     % play recorded audio
+    T = 2000;                                  % number of iterations
+    N = 200;                                   % number of experiments
     L = 10;                                    % filter length
     L_vec = [10, 12, 14, 16];                  % filter length vector
     mu_vec = [0.01, 0.03, 0.05, 0.07, 0.09];   % step size vector
-    alg = 'LMS';                               % algorithm
+    alg = 'LMS';                               % algorithm type
     play = 'none';                             % audio to play
+    src = s.speech;                            % speech signal (switch to 'r.rec' for recorded audio)
 
     % run record audio
     if rec_mode == true
@@ -53,10 +54,10 @@ try
         [opt_L, opt_mu] = optpara(T, N, L_vec, mu_vec, Pw.bpir, alg, c);
     end
 
-    % run noise reduction on noisy speech
+    % run noise reduction on noisy speech or recording
     if ns_mode == true
         fprintf(log_file, 'Running Noise Reduction On Noisy Speech...\n');
-        Te = noisyspeech(s.speech, x.noise, L, Pw.bpir, c, play);
+        Te = noisyspeech(src, x.noise, L, Pw.bpir, c, play);
     end
 
     % close log file

@@ -60,11 +60,24 @@ The above diagram depicts the impulse response filter of the secondary path, den
 ### Dataset
 In this context, the input signal, denoted as `x(n)`, is generated from the `noise.mat` file, while the speech signal, represented by `speech.mat`, is added to the desired signal, `d(n)`. It is crucial for the noise signal to be uncorrelated with the speech signal, as otherwise, the algorithms may inadvertently remove portions of the speech signal. To prevent this, the signals must be distinguishable. Additionally, the impulse response filter of the primary path, `P(z)`, is derived from the `bpir.mat` file. The recorded audio data is stored in the `rec.mat` file, which users themselves can update.
 
+### Configuration
+Paths and names can be specified in the `config.txt` file.
+
+Parameters can be modified within `anc.m` file to experiment:
+| Parameter | Description           |
+|-----------|-----------------------|
+| `d`       | Recording duration    |
+| `p`       | Play recorded audio   |
+| `T`       | Number of iterations  |
+| `N`       | Number of experiments |
+| `L`       | Filter length         |
+| `L_vec`   | Filter length         |
+| `mu_vec`  | Step size vector      |
+| `alg`     | Algorithm type        |
+| `play`    | Audio to play         |
+
 ### Exectuion
 Execute `run.m` to initiate the entire pipeline.
-
-### Configuration
-Parameters and paths can be specified in the `config.txt` file.
 
 ### Installation
 To get started with this project, ensure that you have MATLAB installed on your system. Follow the official [MATLAB installation guide](https://www.mathworks.com/help/install/eg/install-mathworks-software.html) for help with the installation process.
