@@ -7,8 +7,8 @@ Over the past decade, significant attention has been dedicated to developing pra
 - [Adaptive Algorithms](#adaptive-algorithms) 🧠
 - [Filtered Adaptive Algorithms](#filtered-adaptive-algorithms) 🤖
 - [Dataset](#dataset) 📊
-- [Execution](#execution) 🏃‍♂️
 - [Configuration](#configuration) ⚙️
+- [Execution](#execution) 🏃‍♂️
 - [Installation](#installation) 📦
 - [Conclusion](#conclusion) 💡
 
@@ -76,7 +76,7 @@ Parameters can be modified within `anc.m` file to experiment:
 | `alg`     | Algorithm type        |
 | `play`    | Audio to play         |
 
-### Exectuion
+### Execution
 Execute `run.m` to initiate the entire pipeline.
 
 ### Installation
