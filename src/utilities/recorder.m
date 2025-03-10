@@ -2,7 +2,7 @@ function rec = recorder(d, c, p)
 % Record audio and save it to a file
 %
 % Inputs:
-%   d : [1x1] duration of recording in seconds
+%   d : [1x1] recording duration in seconds
 %   c : [struct] containing configuration parameters
 %   p : [0,1] whether to play the recorded audio
 %
