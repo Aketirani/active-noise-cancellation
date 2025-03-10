@@ -1,6 +1,8 @@
 # Active Noise Cancellation Using Filtered Adaptive Algorithms 🔇
 Over the past decade, significant attention has been dedicated to developing practical applications for Active Noise Cancellation (ANC) technology, aimed at addressing noise pollution across multiple domains, including the field of audio. By leveraging adaptive signal processing, ANC, a widely used and advanced technology, is implemented on high-performance digital signal processing (DSP) boards. This technique offers an alternative approach for estimating signals that have been corrupted by additive noise or interference. Fundamentally, ANC involves generating an electro-acoustic sound field to effectively neutralize unwanted noise.
 
+![ANC Gif](images/anc.gif)
+
 ### Table of Contents 📖
 - [Project Overview](#project-overview) 🔍
 - [Structure](#structure) 📂
