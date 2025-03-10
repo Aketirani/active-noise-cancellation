@@ -36,3 +36,5 @@ data_path: 'data/'
 % set image path and names
 image_path: 'images/'
     image1: 'ActiveNoiseCancellation.png'
+    image2: 'run.png'
+    image3: 'exit.png'
