@@ -73,7 +73,7 @@ Parameters can be modified within `anc.m` file to experiment:
 | `T`       | Number of iterations  |
 | `N`       | Number of experiments |
 | `L`       | Filter length         |
-| `L_vec`   | Filter length         |
+| `L_vec`   | Filter length vector  |
 | `mu_vec`  | Step size vector      |
 | `alg`     | Algorithm type        |
 | `play`    | Audio to play         |
