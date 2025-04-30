@@ -4,10 +4,10 @@ classdef gui < matlab.apps.AppBase
 % Properties:
 %   - UIFigure               : main figure window
 %   - InfoTextArea           : area for displaying information
-%   - RecordModeCheckBox     : checkbox for enabling record mode
-%   - SimulateModeCheckBox   : checkbox for enabling simulate mode
+%   - RecordModeCheckBox     : checkbox for enabling record audio mode
+%   - SimulateModeCheckBox   : checkbox for enabling simulate filters mode
 %   - OptimizeModeCheckBox   : checkbox for enabling optimize parameters mode
-%   - NoiseReductionCheckBox : checkbox for enabling noise reduction mode
+%   - ReductionModeCheckBox  : checkbox for enabling noise reduction mode
 %   - RunAppButton           : button for running the application
 %   - CloseAppButton         : button for closing the application
 %   - MenuBar                : menu bar for accessing different options
@@ -20,7 +20,7 @@ classdef gui < matlab.apps.AppBase
         RecordModeCheckBox     matlab.ui.control.CheckBox
         SimulateModeCheckBox   matlab.ui.control.CheckBox
         OptimizeModeCheckBox   matlab.ui.control.CheckBox
-        NoiseReductionCheckBox matlab.ui.control.CheckBox
+        ReductionModeCheckBox matlab.ui.control.CheckBox
         RunAppButton           matlab.ui.control.Button
         CloseAppButton         matlab.ui.control.Button
         MenuBar                matlab.ui.container.Menu
@@ -102,7 +102,7 @@ classdef gui < matlab.apps.AppBase
         function runApplication(app, ~)
             logMessage(app, 'Running application...');
             try
-                anc(app.RecordModeCheckBox.Value, app.SimulateModeCheckBox.Value, app.OptimizeModeCheckBox.Value, app.NoiseReductionCheckBox.Value);
+                anc(app.RecordModeCheckBox.Value, app.SimulateModeCheckBox.Value, app.OptimizeModeCheckBox.Value, app.ReductionModeCheckBox.Value);
                 logMessage(app, 'Application completed successfully.');
             catch ME
                 logMessage(app, ['Error: ', ME.message]);
@@ -159,18 +159,18 @@ classdef gui < matlab.apps.AppBase
                     'Editable', false, 'BackgroundColor', [1, 1, 0], 'FontName', 'Arial', 'FontSize', 11, 'FontWeight', 'bold');
 
                 % checkboxes for modes with updated tooltips
-                app.RecordModeCheckBox = app.createCheckBox('Record Mode', padding, app.InfoTextArea.Position(2) - padding - 20, ...
+                app.RecordModeCheckBox = app.createCheckBox('Record audio mode', padding, app.InfoTextArea.Position(2) - padding - 20, ...
                     'Record audio from a connected microphone to capture real-world sound for further processing');
-                app.SimulateModeCheckBox = app.createCheckBox('Simulate Mode', padding, app.RecordModeCheckBox.Position(2) - padding - 20, ...
+                app.SimulateModeCheckBox = app.createCheckBox('Simulate filters mode', padding, app.RecordModeCheckBox.Position(2) - padding - 20, ...
                     'Simulate the operation of adaptive filters using predefined data to model and test filter behavior');
-                app.OptimizeModeCheckBox = app.createCheckBox('Optimize Parameters Mode', padding, app.SimulateModeCheckBox.Position(2) - padding - 20, ...
+                app.OptimizeModeCheckBox = app.createCheckBox('Optimize parameters mode', padding, app.SimulateModeCheckBox.Position(2) - padding - 20, ...
                     'Find the best filter parameters to improve filter performance through optimization techniques');
-                app.NoiseReductionCheckBox = app.createCheckBox('Noise Reduction Mode', padding, app.OptimizeModeCheckBox.Position(2) - padding - 20, ...
+                app.ReductionModeCheckBox = app.createCheckBox('Noise reduction mode', padding, app.OptimizeModeCheckBox.Position(2) - padding - 20, ...
                     'Apply noise reduction algorithms to clean noisy audio signals and improve clarity and quality');
 
                 % output text area
                 app.OutputTextArea = uitextarea(app.UIFigure, ...
-                    'Position', [padding, app.NoiseReductionCheckBox.Position(2) - 110, figureWidth - 2 * padding, 100], 'Editable', false, ...
+                    'Position', [padding, app.ReductionModeCheckBox.Position(2) - 110, figureWidth - 2 * padding, 100], 'Editable', false, ...
                     'Value', {'Output logs will appear here.'}, 'BackgroundColor', [1, 1, 1], 'FontName', 'Courier', 'FontSize', 10);
 
                 % run and close buttons
