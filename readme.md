@@ -10,7 +10,8 @@ Over the past decade, significant attention has been dedicated to developing pra
 - [Filtered Adaptive Algorithms](#filtered-adaptive-algorithms) 🤖
 - [Dataset](#dataset) 📊
 - [Configuration](#configuration) ⚙️
-- [Execution](#execution) 🏃‍♂️
+- [Execution](#execution) 🏃
+- [Flowchart](#flowchart) 🔁
 - [Installation](#installation) 📦
 - [Conclusion](#conclusion) 💡
 
@@ -81,6 +82,9 @@ Parameters can be modified within `anc.m` file to experiment:
 
 ### Execution
 Execute `run.m` to initiate the entire pipeline.
+
+### Flowchart
+![ANC Gif](images/Flowchart.svg)
 
 ### Installation
 To get started with this project, ensure that you have MATLAB installed on your system. Follow the official [MATLAB installation guide](https://www.mathworks.com/help/install/eg/install-mathworks-software.html) for help with the installation process.

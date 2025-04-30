@@ -1,25 +1,55 @@
-@startuml Pipeline Flowchart
-|ANC|
-package "anc" {
-    :start|
-    package "run.m" {
-        :initializate settings;
-        :run gui;
-        package "gui.m" {
-            :set modes;
-            :run anc;
-            package "anc.m" {
-                :read config;
-                :load data;
-                :initialize parameters;
-                :record audio;
-                :simulate adaptive filters;
-                :optimize parameters;
-                :noise reduction on noisy speech;
-                :write log;
-            }
-        }
-    }
-    :end|
+@startuml
+title Active Noise Cancellation Flowchart 🔁
+
+|USER 🟩|
+package "MatLab" #D5E8D4 {
+  :Start ✅;
 }
+
+|RUN 🟦|
+package "run.m" #DAE8FC {
+  :Initialize settings ⚙️;
+  :Run GUI 🖥️;
+}
+
+|GUI 🟨|
+package "gui.m" #FFF2CC {
+  :Set modes 🧮;
+  :Run ANC 🔊;
+}
+
+|ANC 🟥|
+package "anc.m" #F8CECC {
+  :Read config 📑;
+  :Load data 📊;
+  :Initialize parameters 🔧;
+
+  if (Record mode? 🔀) then (yes)
+    :Record audio 🎤;
+  else (no)
+  endif
+
+  if (Simulate mode? 🔀) then (yes)
+    :Simulate adaptive filters 🧠;
+  else (no)
+  endif
+
+  if (Optimize mode? 🔀) then (yes)
+    :Optimize parameters 🎯;
+  else (no)
+  endif
+
+  if (Reduction mode? 🔀) then (yes)
+    :Apply noise reduction 🎧;
+  else (no)
+  endif
+
+  :Write log 📄;
+}
+
+|USER 🟩|
+package "MatLab" #D5E8D4 {
+  :End 🛑;
+}
+
 @enduml
