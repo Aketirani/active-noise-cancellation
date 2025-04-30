@@ -1,5 +1,5 @@
 @startuml
-title Active Noise Cancellation Flowchart 🔇
+title Active Noise Cancellation Flowchart 🔁
 
 |USER 🟩|
 package "MatLab" #D5E8D4 {
@@ -35,7 +35,7 @@ package "anc.m" #F8CECC {
   endif
 
   if (Optimize Mode? 🔀) then (yes)
-    :Optimize parameters 🔍;
+    :Optimize parameters 🎯;
   else (no)
   endif
 

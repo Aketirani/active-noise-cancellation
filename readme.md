@@ -10,7 +10,8 @@ Over the past decade, significant attention has been dedicated to developing pra
 - [Filtered Adaptive Algorithms](#filtered-adaptive-algorithms) 🤖
 - [Dataset](#dataset) 📊
 - [Configuration](#configuration) ⚙️
-- [Execution](#execution) 🏃‍♂️
+- [Execution](#execution) 🏃
+- [Flowchart](#flowchart) 🔁
 - [Installation](#installation) 📦
 - [Conclusion](#conclusion) 💡
 
