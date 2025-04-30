@@ -24,22 +24,22 @@ package "anc.m" #F8CECC {
   :Load data 📊;
   :Initialize parameters 🔧;
 
-  if (Record Mode? 🔀) then (yes)
+  if (Record mode? 🔀) then (yes)
     :Record audio 🎤;
   else (no)
   endif
 
-  if (Simulate Mode? 🔀) then (yes)
+  if (Simulate mode? 🔀) then (yes)
     :Simulate adaptive filters 🧠;
   else (no)
   endif
 
-  if (Optimize Mode? 🔀) then (yes)
+  if (Optimize mode? 🔀) then (yes)
     :Optimize parameters 🎯;
   else (no)
   endif
 
-  if (Reduction Mode? 🔀) then (yes)
+  if (Reduction mode? 🔀) then (yes)
     :Apply noise reduction 🎧;
   else (no)
   endif
